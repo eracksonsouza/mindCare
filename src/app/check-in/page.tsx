@@ -2,9 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { SmilePlus, Smile, Meh, AlertCircle, Frown, Calendar as CalendarIcon, Lock, Lightbulb } from 'lucide-react';
+import { LucideIcon } from 'lucide-react';
+import { Calendar } from '@/components/ui/calendar';
 
 type Emotion = {
-  emoji: string;
+  icon: LucideIcon;
   label: string;
   value: string;
   color: string;
@@ -18,11 +21,11 @@ type DayOption = {
 };
 
 const emotions: Emotion[] = [
-  { emoji: '😊', label: 'Feliz', value: 'happy', color: 'hover:bg-gray-50 dark:hover:bg-gray-700' },
-  { emoji: '😌', label: 'Calmo', value: 'calm', color: 'hover:bg-gray-50 dark:hover:bg-gray-700' },
-  { emoji: '😐', label: 'Neutro', value: 'neutral', color: 'hover:bg-gray-50 dark:hover:bg-gray-700' },
-  { emoji: '😰', label: 'Ansioso', value: 'anxious', color: 'hover:bg-gray-50 dark:hover:bg-gray-700' },
-  { emoji: '😢', label: 'Triste', value: 'sad', color: 'hover:bg-gray-50 dark:hover:bg-gray-700' },
+  { icon: SmilePlus, label: 'Feliz', value: 'happy', color: 'hover:bg-gray-50 dark:hover:bg-gray-700' },
+  { icon: Smile, label: 'Calmo', value: 'calm', color: 'hover:bg-gray-50 dark:hover:bg-gray-700' },
+  { icon: Meh, label: 'Neutro', value: 'neutral', color: 'hover:bg-gray-50 dark:hover:bg-gray-700' },
+  { icon: AlertCircle, label: 'Ansioso', value: 'anxious', color: 'hover:bg-gray-50 dark:hover:bg-gray-700' },
+  { icon: Frown, label: 'Triste', value: 'sad', color: 'hover:bg-gray-50 dark:hover:bg-gray-700' },
 ];
 
 const dayNames = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
@@ -33,6 +36,9 @@ const CheckInPage = () => {
   const [intensity, setIntensity] = useState<number>(5);
   const [selectedDay, setSelectedDay] = useState<number>(0); // 0 = hoje
   const [dayOptions, setDayOptions] = useState<DayOption[]>([]);
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
+  const [showCalendar, setShowCalendar] = useState<boolean>(false);
+  const [useCustomDate, setUseCustomDate] = useState<boolean>(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -57,13 +63,16 @@ const CheckInPage = () => {
 
   const handleSubmit = () => {
     if (selectedEmotion) {
-      // Calcular a data baseada no dia selecionado
-      const selectedDate = dayOptions[selectedDay].date;
+      // Usar a data customizada se selecionada, senão usar o dia da lista
+      const finalDate = useCustomDate && selectedDate 
+        ? selectedDate 
+        : dayOptions[selectedDay]?.date || new Date();
+        
       // Manter a hora atual mas com a data selecionada
       const timestamp = new Date(
-        selectedDate.getFullYear(),
-        selectedDate.getMonth(),
-        selectedDate.getDate(),
+        finalDate.getFullYear(),
+        finalDate.getMonth(),
+        finalDate.getDate(),
         new Date().getHours(),
         new Date().getMinutes(),
         new Date().getSeconds()
@@ -103,32 +112,38 @@ const CheckInPage = () => {
 
         {/* Seleção do Dia */}
         <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-xl p-6 sm:p-8 mb-6">
-          <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">
-            📅 Para qual dia é este check-in?
+          <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4 flex items-center gap-2">
+            <CalendarIcon className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+            Para qual dia é este check-in?
           </h2>
-          <div className="grid grid-cols-4 sm:grid-cols-7 gap-2 sm:gap-3">
+          
+          {/* Grid de 7 dias */}
+          <div className="grid grid-cols-4 sm:grid-cols-7 gap-2 sm:gap-3 mb-4">
             {dayOptions.map((day) => (
               <button
                 key={day.value}
-                onClick={() => setSelectedDay(day.value)}
+                onClick={() => {
+                  setSelectedDay(day.value);
+                  setUseCustomDate(false);
+                }}
                 className={`
                   flex flex-col items-center justify-center gap-1 px-3 py-3 rounded-xl border-2
                   transition-all duration-200 transform hover:scale-105
-                  ${selectedDay === day.value
+                  ${!useCustomDate && selectedDay === day.value
                     ? 'border-purple-500 bg-gradient-to-br from-purple-100 to-blue-100 dark:from-purple-900/40 dark:to-blue-900/40 shadow-lg'
                     : 'border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700/50 hover:border-purple-300 dark:hover:border-purple-500 hover:shadow-md'
                   }
                 `}
               >
                 <span className={`font-medium text-xs sm:text-sm ${
-                  selectedDay === day.value
+                  !useCustomDate && selectedDay === day.value
                     ? 'text-purple-700 dark:text-purple-300'
                     : 'text-gray-700 dark:text-gray-200'
                 }`}>
                   {day.label}
                 </span>
                 <span className={`text-xs ${
-                  selectedDay === day.value
+                  !useCustomDate && selectedDay === day.value
                     ? 'text-purple-600 dark:text-purple-400'
                     : 'text-gray-500 dark:text-gray-400'
                 }`}>
@@ -137,8 +152,48 @@ const CheckInPage = () => {
               </button>
             ))}
           </div>
-          <p className="text-xs text-gray-500 dark:text-gray-400 mt-3 text-center">
-            💡 Você pode registrar emoções de dias anteriores
+
+          {/* Botão para abrir calendário */}
+          <div className="flex flex-col gap-3">
+            <button
+              onClick={() => setShowCalendar(!showCalendar)}
+              className={`
+                flex items-center justify-center gap-2 px-4 py-2 rounded-lg border-2 transition-all
+                ${useCustomDate && selectedDate
+                  ? 'border-purple-500 bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20'
+                  : 'border-purple-300 dark:border-purple-600 bg-white dark:bg-gray-700 hover:bg-purple-50 dark:hover:bg-purple-900/20'
+                }
+              `}
+            >
+              <CalendarIcon className="w-4 h-4" />
+              <span className="text-sm font-medium">
+                {useCustomDate && selectedDate
+                  ? `${selectedDate.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' })}`
+                  : showCalendar ? 'Ocultar calendário' : 'Escolher data específica'}
+              </span>
+            </button>
+
+            {/* Calendário expansível */}
+            {showCalendar && (
+              <div className="flex justify-center animate-fadeIn">
+                <Calendar
+                  mode="single"
+                  selected={selectedDate}
+                  onSelect={(date) => {
+                    setSelectedDate(date);
+                    setUseCustomDate(true);
+                    setShowCalendar(false);
+                  }}
+                  disabled={(date) => date > new Date() || date < new Date('1900-01-01')}
+                  className="rounded-md border shadow"
+                />
+              </div>
+            )}
+          </div>
+
+          <p className="text-xs text-gray-500 dark:text-gray-400 mt-3 text-center flex items-center justify-center gap-1">
+            <Lightbulb className="w-4 h-4 text-amber-500" />
+            Você pode registrar emoções de dias anteriores
           </p>
         </div>
 
@@ -148,29 +203,36 @@ const CheckInPage = () => {
             Selecione uma emoção
           </h2>
           <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-3">
-            {emotions.map((emotion) => (
-              <button
-                key={emotion.value}
-                onClick={() => setSelectedEmotion(emotion.value)}
-                className={`
-                  flex flex-col sm:flex-row items-center justify-center gap-2 px-4 py-4 sm:py-3 rounded-xl border-2
-                  transition-all duration-200 transform hover:scale-105
-                  ${selectedEmotion === emotion.value 
-                    ? 'border-purple-500 bg-gradient-to-br from-purple-100 to-blue-100 dark:from-purple-900/40 dark:to-blue-900/40 shadow-lg' 
-                    : 'border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700/50 hover:border-purple-300 dark:hover:border-purple-500 hover:shadow-md'
-                  }
-                `}
-              >
-                <span className="text-3xl sm:text-2xl">{emotion.emoji}</span>
-                <span className={`font-medium text-sm sm:text-base ${
-                  selectedEmotion === emotion.value 
-                    ? 'text-purple-700 dark:text-purple-300' 
-                    : 'text-gray-700 dark:text-gray-200'
-                }`}>
-                  {emotion.label}
-                </span>
-              </button>
-            ))}
+            {emotions.map((emotion) => {
+              const EmotionIcon = emotion.icon;
+              return (
+                <button
+                  key={emotion.value}
+                  onClick={() => setSelectedEmotion(emotion.value)}
+                  className={`
+                    flex flex-col sm:flex-row items-center justify-center gap-2 px-4 py-4 sm:py-3 rounded-xl border-2
+                    transition-all duration-200 transform hover:scale-105
+                    ${selectedEmotion === emotion.value 
+                      ? 'border-purple-500 bg-gradient-to-br from-purple-100 to-blue-100 dark:from-purple-900/40 dark:to-blue-900/40 shadow-lg' 
+                      : 'border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700/50 hover:border-purple-300 dark:hover:border-purple-500 hover:shadow-md'
+                    }
+                  `}
+                >
+                  <EmotionIcon className={`w-8 h-8 sm:w-6 sm:h-6 ${
+                    selectedEmotion === emotion.value 
+                      ? 'text-purple-600 dark:text-purple-400' 
+                      : 'text-gray-600 dark:text-gray-400'
+                  }`} />
+                  <span className={`font-medium text-sm sm:text-base ${
+                    selectedEmotion === emotion.value 
+                      ? 'text-purple-700 dark:text-purple-300' 
+                      : 'text-gray-700 dark:text-gray-200'
+                  }`}>
+                    {emotion.label}
+                  </span>
+                </button>
+              );
+            })}
           </div>
         </div>
 
@@ -224,7 +286,7 @@ const CheckInPage = () => {
         </div>
 
         <div className="mt-6 flex items-center justify-center gap-2 text-sm text-gray-500 dark:text-gray-400 bg-white/50 dark:bg-gray-800/50 rounded-xl p-3 backdrop-blur-sm">
-          <span className="text-lg">🔒</span>
+          <Lock className="w-5 h-5 text-blue-500" />
           <p>Seu check-in é completamente anônimo e seguro</p>
         </div>
       </main>
