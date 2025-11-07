@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { Wind, Lightbulb } from 'lucide-react';
 
 export default function BreathingPage() {
   const [phase, setPhase] = useState<'ready' | 'inhale' | 'hold' | 'exhale'>('ready');
@@ -95,8 +96,9 @@ export default function BreathingPage() {
           >
             ← Voltar
           </Link>
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent mb-2">
-            🧘 Respiração Consciente
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent mb-2 flex items-center justify-center gap-2">
+            <Wind className="w-10 h-10 text-blue-600 dark:text-blue-400" />
+            Respiração Consciente
           </h1>
           <p className="text-gray-600 dark:text-gray-300">
             Técnica 4-4-4 para acalmar a mente
@@ -161,9 +163,10 @@ export default function BreathingPage() {
 
           {/* Dicas */}
           <div className="mt-8 bg-blue-50 dark:bg-blue-900/30 rounded-2xl p-4">
-            <p className="text-sm text-gray-700 dark:text-gray-300">
-              <strong>💡 Dica:</strong> Encontre uma posição confortável, feche os olhos se quiser,
-              e concentre-se apenas na sua respiração. Se a mente divagar, gentilmente traga sua atenção de volta.
+            <p className="text-sm text-gray-700 dark:text-gray-300 flex items-start gap-2">
+              <Lightbulb className="w-5 h-5 mt-0.5 flex-shrink-0 text-amber-500" />
+              <span><strong>Dica:</strong> Encontre uma posição confortável, feche os olhos se quiser,
+              e concentre-se apenas na sua respiração. Se a mente divagar, gentilmente traga sua atenção de volta.</span>
             </p>
           </div>
         </div>

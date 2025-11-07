@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { Coffee, Sparkles, Lightbulb } from 'lucide-react';
 
 const exercises = [
   {
@@ -87,8 +88,9 @@ export default function MindfulBreakPage() {
           >
             ← Voltar
           </Link>
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-green-600 to-teal-600 dark:from-green-400 dark:to-teal-400 bg-clip-text text-transparent mb-2">
-            ☕ Pausa Consciente
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-green-600 to-teal-600 dark:from-green-400 dark:to-teal-400 bg-clip-text text-transparent mb-2 flex items-center justify-center gap-2">
+            <Coffee className="w-10 h-10 text-green-600 dark:text-green-400" />
+            Pausa Consciente
           </h1>
           <p className="text-gray-600 dark:text-gray-300">
             Momento de mindfulness para recarregar
@@ -161,14 +163,18 @@ export default function MindfulBreakPage() {
               {/* Passo atual */}
               {currentStep < selectedExercise.steps.length ? (
                 <div className="text-center mb-12">
-                  <div className="text-6xl mb-6 animate-pulse">🌟</div>
+                  <div className="flex justify-center mb-6">
+                    <Sparkles className="w-16 h-16 text-yellow-400 animate-pulse" />
+                  </div>
                   <p className="text-2xl text-gray-800 dark:text-gray-100 font-medium leading-relaxed">
                     {selectedExercise.steps[currentStep].text}
                   </p>
                 </div>
               ) : (
                 <div className="text-center mb-12">
-                  <div className="text-6xl mb-6">✨</div>
+                  <div className="flex justify-center mb-6">
+                    <Sparkles className="w-16 h-16 text-green-500" />
+                  </div>
                   <h2 className="text-3xl font-bold bg-gradient-to-r from-green-600 to-teal-600 dark:from-green-400 dark:to-teal-400 bg-clip-text text-transparent mb-4">
                     Exercício Completo!
                   </h2>
@@ -211,9 +217,10 @@ export default function MindfulBreakPage() {
 
           {/* Dicas */}
           <div className="mt-8 bg-green-50 dark:bg-green-900/30 rounded-2xl p-4">
-            <p className="text-sm text-gray-700 dark:text-gray-300">
-              <strong>💡 Dica:</strong> Pausas conscientes são especialmente úteis quando você se sente
-              sobrecarregado ou precisa renovar o foco. Faça sempre que precisar!
+            <p className="text-sm text-gray-700 dark:text-gray-300 flex items-start gap-2">
+              <Lightbulb className="w-5 h-5 mt-0.5 flex-shrink-0 text-amber-500" />
+              <span><strong>Dica:</strong> Pausas conscientes são especialmente úteis quando você se sente
+              sobrecarregado ou precisa renovar o foco. Faça sempre que precisar!</span>
             </p>
           </div>
         </div>

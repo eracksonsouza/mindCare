@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Sparkles, Activity, Heart } from "lucide-react";
 
 export default function Home() {
   return (
@@ -16,7 +17,7 @@ export default function Home() {
 
           <div className="max-w-2xl space-y-4 text-gray-700 dark:text-gray-300">
             <p className="text-lg leading-relaxed">
-              Bem-vindo(a) ao MindCare! 🌟 Um espaço criado especialmente para você,
+              Bem-vindo(a) ao MindCare! Um espaço criado especialmente para você,
               estudante, que quer aprender a reconhecer e cuidar das suas emoções.
             </p>
             <p className="text-lg leading-relaxed">
@@ -26,39 +27,15 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="mt-8 grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm text-gray-600 dark:text-gray-400">
-            <div className="flex flex-col items-center gap-2 p-4 bg-white/50 dark:bg-gray-800/50 rounded-lg">
-              <span className="text-2xl">🧘</span>
-              <span>Respiração</span>
-            </div>
-            <div className="flex flex-col items-center gap-2 p-4 bg-white/50 dark:bg-gray-800/50 rounded-lg">
-              <span className="text-2xl">🧠</span>
-              <span>Meditação</span>
-            </div>
-            <div className="flex flex-col items-center gap-2 p-4 bg-white/50 dark:bg-gray-800/50 rounded-lg">
-              <span className="text-2xl">⏱️</span>
-              <span>Pomodoro</span>
-            </div>
-            <div className="flex flex-col items-center gap-2 p-4 bg-white/50 dark:bg-gray-800/50 rounded-lg">
-              <span className="text-2xl">☕</span>
-              <span>Pausa</span>
-            </div>
-            <div className="flex flex-col items-center gap-2 p-4 bg-white/50 dark:bg-gray-800/50 rounded-lg">
-              <span className="text-2xl">📝</span>
-              <span>Journaling</span>
-            </div>
-            <div className="flex flex-col items-center gap-2 p-4 bg-white/50 dark:bg-gray-800/50 rounded-lg">
-              <span className="text-2xl">🔒</span>
-              <span>Anônimo</span>
-            </div>
-          </div>
+
 
           <div className="mt-12 flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
             <Link
               href="/check-in"
               className="flex h-14 items-center justify-center gap-2 rounded-full bg-gradient-to-r from-purple-600 to-blue-600 px-8 text-white text-lg font-semibold transition-all hover:shadow-lg hover:scale-105 dark:from-purple-500 dark:to-blue-500"
             >
-              Fazer Check-in Agora ✨
+              <Sparkles className="w-5 h-5" />
+              Fazer Check-in Agora
             </Link>
             <Link
               href="/interventions"
@@ -68,9 +45,18 @@ export default function Home() {
             </Link>
           </div>
 
-          <p className="mt-8 text-sm text-gray-500 dark:text-gray-400 max-w-md">
-            💜 Lembre-se: Suas emoções são válidas. Não há resposta certa ou errada. 
-            Este é um espaço seguro e anônimo para você.
+          <Link
+            href="/dashboard"
+            className="mt-4 text-purple-600 dark:text-purple-400 hover:underline font-semibold flex items-center justify-center gap-2"
+          >
+            <Activity className="w-5 h-5" />
+            Ver Meu Dashboard Emocional
+          </Link>
+
+          <p className="mt-8 text-sm text-gray-500 dark:text-gray-400 max-w-md flex items-start gap-2">
+            <Heart className="w-5 h-5 mt-0.5 flex-shrink-0" />
+            <span>Lembre-se: Suas emoções são válidas. Não há resposta certa ou errada. 
+            Este é um espaço seguro e anônimo para você.</span>
           </p>
         </div>
       </main>

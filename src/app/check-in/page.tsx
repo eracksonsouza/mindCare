@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 type Emotion = {
@@ -8,6 +8,13 @@ type Emotion = {
   label: string;
   value: string;
   color: string;
+};
+
+type DayOption = {
+  value: number;
+  label: string;
+  fullLabel: string;
+  date: Date;
 };
 
 const emotions: Emotion[] = [
@@ -18,18 +25,55 @@ const emotions: Emotion[] = [
   { emoji: '😢', label: 'Triste', value: 'sad', color: 'hover:bg-gray-50 dark:hover:bg-gray-700' },
 ];
 
+const dayNames = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+const dayNamesShort = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+
 const CheckInPage = () => {
   const [selectedEmotion, setSelectedEmotion] = useState<string | null>(null);
   const [intensity, setIntensity] = useState<number>(5);
+  const [selectedDay, setSelectedDay] = useState<number>(0); // 0 = hoje
+  const [dayOptions, setDayOptions] = useState<DayOption[]>([]);
   const router = useRouter();
+
+  useEffect(() => {
+    // Gerar opções dos últimos 7 dias
+    const today = new Date();
+    const options: DayOption[] = [];
+    
+    for (let i = 0; i < 7; i++) {
+      const date = new Date(today);
+      date.setDate(today.getDate() - i);
+      
+      options.push({
+        value: i,
+        label: i === 0 ? 'Hoje' : i === 1 ? 'Ontem' : dayNamesShort[date.getDay()],
+        fullLabel: i === 0 ? 'Hoje' : i === 1 ? 'Ontem' : dayNames[date.getDay()],
+        date: date,
+      });
+    }
+    
+    setDayOptions(options);
+  }, []);
 
   const handleSubmit = () => {
     if (selectedEmotion) {
+      // Calcular a data baseada no dia selecionado
+      const selectedDate = dayOptions[selectedDay].date;
+      // Manter a hora atual mas com a data selecionada
+      const timestamp = new Date(
+        selectedDate.getFullYear(),
+        selectedDate.getMonth(),
+        selectedDate.getDate(),
+        new Date().getHours(),
+        new Date().getMinutes(),
+        new Date().getSeconds()
+      );
+
       // Salvar no localStorage (anonimamente)
       const checkIn = {
         emotion: selectedEmotion,
         intensity,
-        timestamp: new Date().toISOString(),
+        timestamp: timestamp.toISOString(),
       };
       
       const checkIns = JSON.parse(localStorage.getItem('checkIns') || '[]');
@@ -46,90 +90,143 @@ const CheckInPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 p-8">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 dark:from-gray-900 dark:via-purple-900 dark:to-blue-900 p-4 sm:p-8">
       <main className="w-full max-w-4xl mx-auto">
-        <div className="mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+        <div className="mb-8 sm:mb-12">
+          <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 dark:from-purple-400 dark:to-blue-400 bg-clip-text text-transparent mb-3">
             Como você está se sentindo agora?
           </h1>
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="text-gray-600 dark:text-gray-300 text-base sm:text-lg">
             Tire um momento para reconhecer suas emoções
           </p>
         </div>
 
+        {/* Seleção do Dia */}
+        <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-xl p-6 sm:p-8 mb-6">
+          <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">
+            📅 Para qual dia é este check-in?
+          </h2>
+          <div className="grid grid-cols-4 sm:grid-cols-7 gap-2 sm:gap-3">
+            {dayOptions.map((day) => (
+              <button
+                key={day.value}
+                onClick={() => setSelectedDay(day.value)}
+                className={`
+                  flex flex-col items-center justify-center gap-1 px-3 py-3 rounded-xl border-2
+                  transition-all duration-200 transform hover:scale-105
+                  ${selectedDay === day.value
+                    ? 'border-purple-500 bg-gradient-to-br from-purple-100 to-blue-100 dark:from-purple-900/40 dark:to-blue-900/40 shadow-lg'
+                    : 'border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700/50 hover:border-purple-300 dark:hover:border-purple-500 hover:shadow-md'
+                  }
+                `}
+              >
+                <span className={`font-medium text-xs sm:text-sm ${
+                  selectedDay === day.value
+                    ? 'text-purple-700 dark:text-purple-300'
+                    : 'text-gray-700 dark:text-gray-200'
+                }`}>
+                  {day.label}
+                </span>
+                <span className={`text-xs ${
+                  selectedDay === day.value
+                    ? 'text-purple-600 dark:text-purple-400'
+                    : 'text-gray-500 dark:text-gray-400'
+                }`}>
+                  {day.date.getDate()}/{day.date.getMonth() + 1}
+                </span>
+              </button>
+            ))}
+          </div>
+          <p className="text-xs text-gray-500 dark:text-gray-400 mt-3 text-center">
+            💡 Você pode registrar emoções de dias anteriores
+          </p>
+        </div>
+
         {/* Seleção de Emoções */}
-        <div className="flex gap-3 mb-6">
-          {emotions.map((emotion) => (
-            <button
-              key={emotion.value}
-              onClick={() => setSelectedEmotion(emotion.value)}
-              className={`
-                flex items-center gap-2 px-4 py-2 rounded-lg border
-                transition-all duration-200
-                ${selectedEmotion === emotion.value 
-                  ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20' 
-                  : 'border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500'
-                }
-              `}
-            >
-              <span className="text-2xl">{emotion.emoji}</span>
-              <span className="font-medium text-gray-700 dark:text-gray-200 text-sm">
-                {emotion.label}
-              </span>
-            </button>
-          ))}
+        <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-xl p-6 sm:p-8 mb-6">
+          <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">
+            Selecione uma emoção
+          </h2>
+          <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-3">
+            {emotions.map((emotion) => (
+              <button
+                key={emotion.value}
+                onClick={() => setSelectedEmotion(emotion.value)}
+                className={`
+                  flex flex-col sm:flex-row items-center justify-center gap-2 px-4 py-4 sm:py-3 rounded-xl border-2
+                  transition-all duration-200 transform hover:scale-105
+                  ${selectedEmotion === emotion.value 
+                    ? 'border-purple-500 bg-gradient-to-br from-purple-100 to-blue-100 dark:from-purple-900/40 dark:to-blue-900/40 shadow-lg' 
+                    : 'border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700/50 hover:border-purple-300 dark:hover:border-purple-500 hover:shadow-md'
+                  }
+                `}
+              >
+                <span className="text-3xl sm:text-2xl">{emotion.emoji}</span>
+                <span className={`font-medium text-sm sm:text-base ${
+                  selectedEmotion === emotion.value 
+                    ? 'text-purple-700 dark:text-purple-300' 
+                    : 'text-gray-700 dark:text-gray-200'
+                }`}>
+                  {emotion.label}
+                </span>
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Intensidade */}
         {selectedEmotion && (
-          <div className="mb-8 animate-fadeIn">
-            <label className="block mb-4 text-base font-medium text-gray-700 dark:text-gray-200">
-              Qual a intensidade? (1-10)
-            </label>
-            <div className="flex items-center gap-4">
-              <span className="text-sm text-gray-500 dark:text-gray-400">Pouco</span>
+          <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-xl p-6 sm:p-8 mb-6 animate-fadeIn">
+            <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">
+              Qual a intensidade?
+            </h2>
+            <div className="flex items-center gap-3 sm:gap-4">
+              <span className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">Pouco</span>
               <input
                 type="range"
                 min="1"
                 max="10"
                 value={intensity}
                 onChange={(e) => setIntensity(Number(e.target.value))}
-                className="flex-1 h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-purple-600"
+                className="flex-1 h-3 bg-gradient-to-r from-green-200 via-yellow-200 to-red-200 dark:from-green-900/50 dark:via-yellow-900/50 dark:to-red-900/50 rounded-lg appearance-none cursor-pointer accent-purple-600 shadow-inner"
               />
-              <span className="text-sm text-gray-500 dark:text-gray-400">Muito</span>
-              <span className="text-lg font-bold text-purple-600 dark:text-purple-400 w-8 text-center">
-                {intensity}
-              </span>
+              <span className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">Muito</span>
+              <div className="flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 shadow-lg">
+                <span className="text-lg font-bold text-white">
+                  {intensity}
+                </span>
+              </div>
             </div>
           </div>
         )}
 
         {/* Botões */}
-        <div className="flex gap-3">
+        <div className="flex flex-col sm:flex-row gap-3">
           <button
             onClick={() => router.push('/')}
-            className="px-5 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-medium hover:bg-gray-50 dark:hover:bg-gray-800 transition-all"
+            className="px-6 py-3 rounded-xl border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-semibold hover:bg-white dark:hover:bg-gray-700 hover:shadow-md transition-all"
           >
-            Voltar
+            ← Voltar
           </button>
           <button
             onClick={handleSubmit}
             disabled={!selectedEmotion}
             className={`
-              px-5 py-2.5 rounded-lg font-medium transition-all
+              px-6 py-3 rounded-xl font-semibold transition-all transform
               ${selectedEmotion
-                ? 'bg-purple-600 text-white hover:bg-purple-700'
-                : 'bg-gray-200 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed'
+                ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:shadow-lg hover:scale-105'
+                : 'bg-gray-200 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed opacity-50'
               }
             `}
           >
-            Continuar
+            Continuar →
           </button>
         </div>
 
-        <p className="mt-6 text-sm text-gray-500 dark:text-gray-400">
-          🔒 Seu check-in é completamente anônimo e seguro
-        </p>
+        <div className="mt-6 flex items-center justify-center gap-2 text-sm text-gray-500 dark:text-gray-400 bg-white/50 dark:bg-gray-800/50 rounded-xl p-3 backdrop-blur-sm">
+          <span className="text-lg">🔒</span>
+          <p>Seu check-in é completamente anônimo e seguro</p>
+        </div>
       </main>
     </div>
   );

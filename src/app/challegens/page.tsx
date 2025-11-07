@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Target, Calendar, Trophy, Users, Dumbbell, Construction } from 'lucide-react';
 
 export default function ChallengesPage() {
   return (
@@ -11,8 +12,9 @@ export default function ChallengesPage() {
           >
             ← Voltar ao início
           </Link>
-          <h1 className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 bg-clip-text text-transparent mb-4">
-            🎯 Desafios de Bem-Estar
+          <h1 className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 bg-clip-text text-transparent mb-4 flex items-center justify-center gap-2">
+            <Target className="w-10 h-10 text-indigo-600 dark:text-indigo-400" />
+            Desafios de Bem-Estar
           </h1>
           <p className="text-gray-600 dark:text-gray-300 text-lg max-w-2xl mx-auto">
             Desafios diários para desenvolver hábitos saudáveis e cuidar da sua saúde mental
@@ -20,7 +22,9 @@ export default function ChallengesPage() {
         </div>
 
         <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-3xl shadow-2xl p-8 sm:p-12 text-center">
-          <div className="text-6xl mb-6">🚧</div>
+          <div className="flex justify-center mb-6">
+            <Construction className="w-16 h-16 text-orange-500" />
+          </div>
           <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-4">
             Em Breve!
           </h2>
@@ -30,28 +34,36 @@ export default function ChallengesPage() {
           
           <div className="grid sm:grid-cols-2 gap-4 mb-8 max-w-2xl mx-auto">
             <div className="bg-indigo-50 dark:bg-indigo-900/30 rounded-2xl p-6">
-              <div className="text-3xl mb-2">📅</div>
+              <div className="flex justify-center mb-2">
+                <Calendar className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
+              </div>
               <h3 className="font-semibold text-gray-800 dark:text-gray-100 mb-1">Desafios Diários</h3>
               <p className="text-sm text-gray-600 dark:text-gray-300">
                 Pequenas ações para praticar todo dia
               </p>
             </div>
             <div className="bg-purple-50 dark:bg-purple-900/30 rounded-2xl p-6">
-              <div className="text-3xl mb-2">🏆</div>
+              <div className="flex justify-center mb-2">
+                <Trophy className="w-8 h-8 text-purple-600 dark:text-purple-400" />
+              </div>
               <h3 className="font-semibold text-gray-800 dark:text-gray-100 mb-1">Sistema de Conquistas</h3>
               <p className="text-sm text-gray-600 dark:text-gray-300">
                 Acompanhe seu progresso
               </p>
             </div>
             <div className="bg-pink-50 dark:bg-pink-900/30 rounded-2xl p-6">
-              <div className="text-3xl mb-2">👥</div>
+              <div className="flex justify-center mb-2">
+                <Users className="w-8 h-8 text-pink-600 dark:text-pink-400" />
+              </div>
               <h3 className="font-semibold text-gray-800 dark:text-gray-100 mb-1">Desafios em Grupo</h3>
               <p className="text-sm text-gray-600 dark:text-gray-300">
                 Participe com seus amigos
               </p>
             </div>
             <div className="bg-indigo-50 dark:bg-indigo-900/30 rounded-2xl p-6">
-              <div className="text-3xl mb-2">💪</div>
+              <div className="flex justify-center mb-2">
+                <Dumbbell className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
+              </div>
               <h3 className="font-semibold text-gray-800 dark:text-gray-100 mb-1">Hábitos Saudáveis</h3>
               <p className="text-sm text-gray-600 dark:text-gray-300">
                 Construa rotinas positivas

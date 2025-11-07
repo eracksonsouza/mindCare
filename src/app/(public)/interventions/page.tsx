@@ -1,9 +1,11 @@
 import Link from 'next/link';
+import { Wind, Brain, Timer, Coffee, FileText, Clock } from 'lucide-react';
+import { LucideIcon } from 'lucide-react';
 
 type Intervention = {
   id: string;
   title: string;
-  emoji: string;
+  icon: LucideIcon;
   description: string;
   duration: string;
   color: string;
@@ -13,7 +15,7 @@ const interventions: Intervention[] = [
   {
     id: 'breathing',
     title: 'Respiração Consciente',
-    emoji: '🧘',
+    icon: Wind,
     description: 'Exercícios de respiração para acalmar a mente e reduzir a ansiedade',
     duration: '3-5 min',
     color: 'from-blue-400 to-cyan-400',
@@ -21,7 +23,7 @@ const interventions: Intervention[] = [
   {
     id: 'meditation',
     title: 'Meditação Guiada',
-    emoji: '🧠',
+    icon: Brain,
     description: 'Meditação simples e guiada para relaxar e encontrar paz interior',
     duration: '5-10 min',
     color: 'from-purple-400 to-pink-400',
@@ -29,7 +31,7 @@ const interventions: Intervention[] = [
   {
     id: 'pomodoro',
     title: 'Técnica Pomodoro',
-    emoji: '⏱️',
+    icon: Timer,
     description: 'Gerencie seu tempo de estudo com intervalos programados',
     duration: '25 + 5 min',
     color: 'from-red-400 to-orange-400',
@@ -37,7 +39,7 @@ const interventions: Intervention[] = [
   {
     id: 'mindful-break',
     title: 'Pausa Consciente',
-    emoji: '☕',
+    icon: Coffee,
     description: 'Momento de mindfulness para recarregar suas energias',
     duration: '2-5 min',
     color: 'from-green-400 to-teal-400',
@@ -45,7 +47,7 @@ const interventions: Intervention[] = [
   {
     id: 'journaling',
     title: 'Journaling Rápido',
-    emoji: '📝',
+    icon: FileText,
     description: 'Escreva sobre seus sentimentos e organize seus pensamentos',
     duration: '5-10 min',
     color: 'from-amber-400 to-yellow-400',
@@ -79,8 +81,8 @@ export default function InterventionsPage() {
               className="group"
             >
               <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 hover:shadow-2xl transition-all duration-300 hover:scale-105 h-full">
-                <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${intervention.color} flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform`}>
-                  {intervention.emoji}
+                <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${intervention.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
+                  <intervention.icon className="w-8 h-8 text-white" />
                 </div>
                 <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-2">
                   {intervention.title}
@@ -89,8 +91,9 @@ export default function InterventionsPage() {
                   {intervention.description}
                 </p>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-purple-600 dark:text-purple-400 font-semibold">
-                    ⏱️ {intervention.duration}
+                  <span className="text-sm text-purple-600 dark:text-purple-400 font-semibold flex items-center gap-1">
+                    <Clock className="w-4 h-4" />
+                    {intervention.duration}
                   </span>
                   <span className="text-purple-600 dark:text-purple-400 group-hover:translate-x-1 transition-transform">
                     →
@@ -102,8 +105,9 @@ export default function InterventionsPage() {
         </div>
 
         <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-2xl p-6 text-center">
-          <p className="text-gray-700 dark:text-gray-300 mb-2">
-            💡 <strong>Dica:</strong> Experimente diferentes microintervenções e descubra qual funciona melhor para você!
+          <p className="text-gray-700 dark:text-gray-300 mb-2 flex items-center justify-center gap-2">
+            <span className="text-2xl">💡</span>
+            <span><strong>Dica:</strong> Experimente diferentes microintervenções e descubra qual funciona melhor para você!</span>
           </p>
           <p className="text-sm text-gray-600 dark:text-gray-400">
             Não existe uma resposta certa. Cada pessoa tem sua própria jornada de autocuidado.

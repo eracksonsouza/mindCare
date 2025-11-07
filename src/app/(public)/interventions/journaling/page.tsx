@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { FileText, RefreshCw, Save, BookOpen, Lock, Lightbulb, Trash2, MessageCircle, CheckCircle } from 'lucide-react';
 
 const prompts = [
   'Como você está se sentindo agora?',
@@ -88,8 +89,9 @@ export default function JournalingPage() {
           >
             ← Voltar
           </Link>
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-amber-600 to-orange-600 dark:from-amber-400 dark:to-orange-400 bg-clip-text text-transparent mb-2">
-            📝 Journaling Rápido
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-amber-600 to-orange-600 dark:from-amber-400 dark:to-orange-400 bg-clip-text text-transparent mb-2 flex items-center justify-center gap-2">
+            <FileText className="w-10 h-10 text-amber-600 dark:text-amber-400" />
+            Journaling Rápido
           </h1>
           <p className="text-gray-600 dark:text-gray-300">
             Expresse seus sentimentos e organize seus pensamentos
@@ -102,15 +104,18 @@ export default function JournalingPage() {
             {!isSaved ? (
               <>
                 <div className="mb-6">
-                  <div className="text-3xl mb-4 text-center">💭</div>
+                  <div className="flex justify-center mb-4">
+                    <MessageCircle className="w-12 h-12 text-amber-600 dark:text-amber-400" />
+                  </div>
                   <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4 text-center">
                     {currentPrompt}
                   </h2>
                   <button
                     onClick={() => setCurrentPrompt(prompts[Math.floor(Math.random() * prompts.length)])}
-                    className="text-sm text-amber-600 dark:text-amber-400 hover:underline mx-auto block"
+                    className="text-sm text-amber-600 dark:text-amber-400 hover:underline mx-auto flex items-center gap-1"
                   >
-                    🔄 Mudar pergunta
+                    <RefreshCw className="w-4 h-4" />
+                    Mudar pergunta
                   </button>
                 </div>
 
@@ -129,27 +134,31 @@ export default function JournalingPage() {
                     onClick={saveEntry}
                     disabled={!journalText.trim()}
                     className={`
-                      px-6 py-3 rounded-full font-semibold transition-all
+                      px-6 py-3 rounded-full font-semibold transition-all flex items-center gap-2
                       ${journalText.trim()
                         ? 'bg-gradient-to-r from-amber-600 to-orange-600 text-white hover:shadow-lg hover:scale-105'
                         : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                       }
                     `}
                   >
-                    Salvar 💾
+                    <Save className="w-4 h-4" />
+                    Salvar
                   </button>
                 </div>
 
                 <div className="mt-6 bg-amber-50 dark:bg-amber-900/30 rounded-2xl p-4">
-                  <p className="text-sm text-gray-700 dark:text-gray-300">
-                    <strong>💡 Dica:</strong> Escrever sobre seus sentimentos ajuda a processá-los
-                    e entender melhor o que está acontecendo dentro de você. Seja honesto e gentil consigo mesmo.
+                  <p className="text-sm text-gray-700 dark:text-gray-300 flex items-start gap-2">
+                    <Lightbulb className="w-5 h-5 mt-0.5 flex-shrink-0 text-amber-500" />
+                    <span><strong>Dica:</strong> Escrever sobre seus sentimentos ajuda a processá-los
+                    e entender melhor o que está acontecendo dentro de você. Seja honesto e gentil consigo mesmo.</span>
                   </p>
                 </div>
               </>
             ) : (
               <div className="text-center py-16">
-                <div className="text-6xl mb-4 animate-bounce">✅</div>
+                <div className="flex justify-center mb-4">
+                  <CheckCircle className="w-16 h-16 text-green-500 animate-bounce" />
+                </div>
                 <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-2">
                   Salvo com sucesso!
                 </h2>
@@ -163,7 +172,8 @@ export default function JournalingPage() {
           {/* Histórico */}
           <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-3xl shadow-2xl p-8">
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100">
+              <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 flex items-center gap-2">
+                <BookOpen className="w-6 h-6" />
                 Suas Reflexões
               </h2>
               <button
@@ -178,7 +188,9 @@ export default function JournalingPage() {
               <div className="space-y-4 max-h-[500px] overflow-y-auto">
                 {entries.length === 0 ? (
                   <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-                    <div className="text-4xl mb-2">📖</div>
+                    <div className="flex justify-center mb-2">
+                      <BookOpen className="w-12 h-12" />
+                    </div>
                     <p className="text-sm">Nenhuma entrada ainda</p>
                   </div>
                 ) : (
@@ -193,9 +205,9 @@ export default function JournalingPage() {
                         </span>
                         <button
                           onClick={() => deleteEntry(entry.id)}
-                          className="text-red-500 hover:text-red-700 text-xs"
+                          className="text-red-500 hover:text-red-700 text-xs flex items-center gap-1"
                         >
-                          🗑️
+                          <Trash2 className="w-3 h-3" />
                         </button>
                       </div>
                       <p className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
@@ -211,9 +223,10 @@ export default function JournalingPage() {
             )}
 
             <div className="mt-6 bg-orange-50 dark:bg-orange-900/30 rounded-2xl p-4">
-              <p className="text-sm text-gray-700 dark:text-gray-300">
-                <strong>🔒 Privacidade:</strong> Suas entradas são salvas apenas no seu dispositivo
-                e nunca são enviadas para nenhum servidor. Só você tem acesso a elas.
+              <p className="text-sm text-gray-700 dark:text-gray-300 flex items-start gap-2">
+                <Lock className="w-5 h-5 mt-0.5 flex-shrink-0 text-blue-500" />
+                <span><strong>Privacidade:</strong> Suas entradas são salvas apenas no seu dispositivo
+                e nunca são enviadas para nenhum servidor. Só você tem acesso a elas.</span>
               </p>
             </div>
           </div>
