@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
+import { useState, useEffect } from "react";
+import Link from "next/link";
 
-type Phase = 'work' | 'break' | 'longBreak';
+type Phase = "work" | "break" | "longBreak";
 
 export default function PomodoroPage() {
-  const [phase, setPhase] = useState<Phase>('work');
+  const [phase, setPhase] = useState<Phase>("work");
   const [timeRemaining, setTimeRemaining] = useState(25 * 60);
   const [isActive, setIsActive] = useState(false);
   const [completedPomodoros, setCompletedPomodoros] = useState(0);
@@ -21,7 +21,7 @@ export default function PomodoroPage() {
     if (!isActive) return;
 
     const timer = setInterval(() => {
-      setTimeRemaining(prev => {
+      setTimeRemaining((prev) => {
         if (prev <= 1) {
           handlePhaseComplete();
           return 0;
@@ -34,32 +34,30 @@ export default function PomodoroPage() {
   }, [isActive, phase]);
 
   const handlePhaseComplete = () => {
-    // Notificação sonora (opcional - pode adicionar um beep)
-    if (typeof window !== 'undefined' && 'Notification' in window) {
-      if (Notification.permission === 'granted') {
-        new Notification('Pomodoro', {
-          body: phase === 'work' ? 'Hora da pausa!' : 'Hora de focar!',
+    if (typeof window !== "undefined" && "Notification" in window) {
+      if (Notification.permission === "granted") {
+        new Notification("Pomodoro", {
+          body: phase === "work" ? "Hora da pausa!" : "Hora de focar!",
         });
       }
     }
 
-    if (phase === 'work') {
+    if (phase === "work") {
       const newCompleted = completedPomodoros + 1;
       setCompletedPomodoros(newCompleted);
-      
-      // A cada 4 pomodoros, pausa longa
+
       if (newCompleted % 4 === 0) {
-        setPhase('longBreak');
+        setPhase("longBreak");
         setTimeRemaining(durations.longBreak);
       } else {
-        setPhase('break');
+        setPhase("break");
         setTimeRemaining(durations.break);
       }
     } else {
-      setPhase('work');
+      setPhase("work");
       setTimeRemaining(durations.work);
     }
-    
+
     setIsActive(false);
   };
 
@@ -72,11 +70,11 @@ export default function PomodoroPage() {
 
   const skipPhase = () => {
     setIsActive(false);
-    if (phase === 'work') {
-      setPhase('break');
+    if (phase === "work") {
+      setPhase("break");
       setTimeRemaining(durations.break);
     } else {
-      setPhase('work');
+      setPhase("work");
       setTimeRemaining(durations.work);
     }
   };
@@ -84,49 +82,57 @@ export default function PomodoroPage() {
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
-    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    return `${mins.toString().padStart(2, "0")}:${secs
+      .toString()
+      .padStart(2, "0")}`;
   };
 
   const requestNotificationPermission = () => {
-    if ('Notification' in window && Notification.permission === 'default') {
+    if ("Notification" in window && Notification.permission === "default") {
       Notification.requestPermission();
     }
   };
 
   const getPhaseInfo = () => {
     switch (phase) {
-      case 'work':
+      case "work":
         return {
-          title: 'Foco nos Estudos',
-          emoji: '📚',
-          color: 'from-red-400 to-orange-400',
-          bgColor: 'from-red-50 via-orange-50 to-yellow-50 dark:from-gray-900 dark:via-red-900 dark:to-orange-900',
-          message: 'Concentre-se em uma tarefa por vez',
+          title: "Foco nos Estudos",
+          emoji: "📚",
+          color: "from-red-400 to-orange-400",
+          bgColor:
+            "from-red-50 via-orange-50 to-yellow-50 dark:from-gray-900 dark:via-red-900 dark:to-orange-900",
+          message: "Concentre-se em uma tarefa por vez",
         };
-      case 'break':
+      case "break":
         return {
-          title: 'Pausa Curta',
-          emoji: '☕',
-          color: 'from-green-400 to-teal-400',
-          bgColor: 'from-green-50 via-teal-50 to-cyan-50 dark:from-gray-900 dark:via-green-900 dark:to-teal-900',
-          message: 'Relaxe e recarregue as energias',
+          title: "Pausa Curta",
+          emoji: "☕",
+          color: "from-green-400 to-teal-400",
+          bgColor:
+            "from-green-50 via-teal-50 to-cyan-50 dark:from-gray-900 dark:via-green-900 dark:to-teal-900",
+          message: "Relaxe e recarregue as energias",
         };
-      case 'longBreak':
+      case "longBreak":
         return {
-          title: 'Pausa Longa',
-          emoji: '🎉',
-          color: 'from-purple-400 to-pink-400',
-          bgColor: 'from-purple-50 via-pink-50 to-rose-50 dark:from-gray-900 dark:via-purple-900 dark:to-pink-900',
-          message: 'Ótimo trabalho! Faça uma pausa maior',
+          title: "Pausa Longa",
+          emoji: "🎉",
+          color: "from-purple-400 to-pink-400",
+          bgColor:
+            "from-purple-50 via-pink-50 to-rose-50 dark:from-gray-900 dark:via-purple-900 dark:to-pink-900",
+          message: "Ótimo trabalho! Faça uma pausa maior",
         };
     }
   };
 
   const info = getPhaseInfo();
-  const progress = ((durations[phase] - timeRemaining) / durations[phase]) * 100;
+  const progress =
+    ((durations[phase] - timeRemaining) / durations[phase]) * 100;
 
   return (
-    <div className={`min-h-screen bg-gradient-to-br ${info.bgColor} font-sans p-4 flex items-center justify-center`}>
+    <div
+      className={`min-h-screen bg-gradient-to-br ${info.bgColor} font-sans p-4 flex items-center justify-center`}
+    >
       <div className="max-w-2xl w-full">
         <div className="text-center mb-8">
           <Link
@@ -144,16 +150,16 @@ export default function PomodoroPage() {
         </div>
 
         <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-3xl shadow-2xl p-8 sm:p-12">
-          {/* Status atual */}
           <div className="text-center mb-8">
             <div className="text-6xl mb-4">{info.emoji}</div>
-            <h2 className={`text-3xl font-bold bg-gradient-to-r ${info.color} bg-clip-text text-transparent mb-2`}>
+            <h2
+              className={`text-3xl font-bold bg-gradient-to-r ${info.color} bg-clip-text text-transparent mb-2`}
+            >
               {info.title}
             </h2>
             <p className="text-gray-600 dark:text-gray-300">{info.message}</p>
           </div>
 
-          {/* Timer */}
           <div className="text-center mb-8">
             <div className="text-7xl font-bold text-gray-800 dark:text-gray-100 mb-6 font-mono">
               {formatTime(timeRemaining)}
@@ -166,31 +172,30 @@ export default function PomodoroPage() {
             </div>
           </div>
 
-          {/* Pomodoros completados */}
           <div className="flex justify-center gap-2 mb-8">
             {[...Array(4)].map((_, i) => (
               <div
                 key={i}
                 className={`w-4 h-4 rounded-full ${
                   i < completedPomodoros % 4
-                    ? 'bg-gradient-to-r from-red-500 to-orange-500'
-                    : 'bg-gray-300 dark:bg-gray-600'
+                    ? "bg-gradient-to-r from-red-500 to-orange-500"
+                    : "bg-gray-300 dark:bg-gray-600"
                 }`}
               />
             ))}
             <span className="ml-2 text-sm text-gray-600 dark:text-gray-400">
-              {completedPomodoros} pomodoro{completedPomodoros !== 1 ? 's' : ''} completo{completedPomodoros !== 1 ? 's' : ''}
+              {completedPomodoros} pomodoro{completedPomodoros !== 1 ? "s" : ""}{" "}
+              completo{completedPomodoros !== 1 ? "s" : ""}
             </span>
           </div>
 
-          {/* Controles */}
           <div className="flex flex-wrap justify-center gap-4 mb-6">
             {!isActive ? (
               <button
                 onClick={start}
                 className={`px-8 py-4 rounded-full bg-gradient-to-r ${info.color} text-white font-semibold hover:shadow-lg hover:scale-105 transition-all`}
               >
-                {timeRemaining === durations[phase] ? 'Iniciar' : 'Continuar'}
+                {timeRemaining === durations[phase] ? "Iniciar" : "Continuar"}
               </button>
             ) : (
               <button
@@ -214,21 +219,22 @@ export default function PomodoroPage() {
             </button>
           </div>
 
-          {/* Notificações */}
-          {typeof window !== 'undefined' && 'Notification' in window && Notification.permission === 'default' && (
-            <button
-              onClick={requestNotificationPermission}
-              className="w-full text-sm text-blue-600 dark:text-blue-400 hover:underline mb-6"
-            >
-              🔔 Ativar notificações
-            </button>
-          )}
+          {typeof window !== "undefined" &&
+            "Notification" in window &&
+            Notification.permission === "default" && (
+              <button
+                onClick={requestNotificationPermission}
+                className="w-full text-sm text-blue-600 dark:text-blue-400 hover:underline mb-6"
+              >
+                🔔 Ativar notificações
+              </button>
+            )}
 
-          {/* Dicas */}
           <div className="bg-orange-50 dark:bg-orange-900/30 rounded-2xl p-4">
             <p className="text-sm text-gray-700 dark:text-gray-300">
-              <strong>💡 Como funciona:</strong> Trabalhe focado por 25 minutos, depois faça uma pausa de 5 minutos.
-              A cada 4 pomodoros, faça uma pausa mais longa de 15 minutos!
+              <strong>💡 Como funciona:</strong> Trabalhe focado por 25 minutos,
+              depois faça uma pausa de 5 minutos. A cada 4 pomodoros, faça uma
+              pausa mais longa de 15 minutos!
             </p>
           </div>
         </div>

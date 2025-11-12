@@ -1,11 +1,13 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { Wind, Lightbulb } from 'lucide-react';
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { Wind, Lightbulb } from "lucide-react";
 
 export default function BreathingPage() {
-  const [phase, setPhase] = useState<'ready' | 'inhale' | 'hold' | 'exhale'>('ready');
+  const [phase, setPhase] = useState<"ready" | "inhale" | "hold" | "exhale">(
+    "ready"
+  );
   const [count, setCount] = useState(0);
   const [isActive, setIsActive] = useState(false);
   const [cycles, setCycles] = useState(0);
@@ -14,10 +16,10 @@ export default function BreathingPage() {
     if (!isActive) return;
 
     const sequence = [
-      { phase: 'inhale' as const, duration: 4000, text: 'Inspire' },
-      { phase: 'hold' as const, duration: 4000, text: 'Segure' },
-      { phase: 'exhale' as const, duration: 4000, text: 'Expire' },
-      { phase: 'hold' as const, duration: 2000, text: 'Pausa' },
+      { phase: "inhale" as const, duration: 4000 },
+      { phase: "hold" as const, duration: 4000 },
+      { phase: "exhale" as const, duration: 4000 },
+      { phase: "hold" as const, duration: 2000 },
     ];
 
     let currentStep = 0;
@@ -29,7 +31,6 @@ export default function BreathingPage() {
       setPhase(current.phase);
       setCount(0);
 
-      // Contador visual
       const countDuration = current.duration / 1000;
       let currentCount = 0;
       countInterval = setInterval(() => {
@@ -43,7 +44,7 @@ export default function BreathingPage() {
       phaseTimeout = setTimeout(() => {
         currentStep = (currentStep + 1) % sequence.length;
         if (currentStep === 0) {
-          setCycles(prev => prev + 1);
+          setCycles((prev) => prev + 1);
         }
         nextPhase();
       }, current.duration);
@@ -64,25 +65,33 @@ export default function BreathingPage() {
 
   const stop = () => {
     setIsActive(false);
-    setPhase('ready');
+    setPhase("ready");
     setCount(0);
   };
 
   const getPhaseText = () => {
     switch (phase) {
-      case 'inhale': return 'Inspire profundamente pelo nariz';
-      case 'hold': return count <= 4 ? 'Segure a respiração' : 'Pequena pausa';
-      case 'exhale': return 'Expire lentamente pela boca';
-      default: return 'Pressione começar quando estiver pronto';
+      case "inhale":
+        return "Inspire profundamente pelo nariz";
+      case "hold":
+        return count <= 4 ? "Segure a respiração" : "Pequena pausa";
+      case "exhale":
+        return "Expire lentamente pela boca";
+      default:
+        return "Pressione começar quando estiver pronto";
     }
   };
 
   const getCircleSize = () => {
     switch (phase) {
-      case 'inhale': return 'scale-150';
-      case 'hold': return 'scale-150';
-      case 'exhale': return 'scale-100';
-      default: return 'scale-100';
+      case "inhale":
+        return "scale-150";
+      case "hold":
+        return "scale-150";
+      case "exhale":
+        return "scale-100";
+      default:
+        return "scale-100";
     }
   };
 
@@ -106,7 +115,6 @@ export default function BreathingPage() {
         </div>
 
         <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-3xl shadow-2xl p-8 sm:p-12">
-          {/* Círculo de respiração */}
           <div className="flex items-center justify-center mb-8 h-64">
             <div className="relative">
               <div
@@ -115,22 +123,27 @@ export default function BreathingPage() {
                   flex items-center justify-center
                   transition-all duration-4000 ease-in-out
                   ${getCircleSize()}
-                  ${isActive ? 'opacity-80' : 'opacity-40'}
+                  ${isActive ? "opacity-80" : "opacity-40"}
                 `}
               >
                 <div className="text-center text-white">
                   <div className="text-6xl font-bold mb-2">
-                    {isActive ? count : '•'}
+                    {isActive ? count : "•"}
                   </div>
                   <div className="text-sm font-medium uppercase tracking-wide">
-                    {phase === 'ready' ? 'Pronto' : phase === 'inhale' ? 'Inspire' : phase === 'exhale' ? 'Expire' : 'Segure'}
+                    {phase === "ready"
+                      ? "Pronto"
+                      : phase === "inhale"
+                      ? "Inspire"
+                      : phase === "exhale"
+                      ? "Expire"
+                      : "Segure"}
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Instruções */}
           <div className="text-center mb-8">
             <p className="text-xl text-gray-700 dark:text-gray-200 font-medium mb-4">
               {getPhaseText()}
@@ -142,7 +155,6 @@ export default function BreathingPage() {
             )}
           </div>
 
-          {/* Controles */}
           <div className="flex justify-center gap-4">
             {!isActive ? (
               <button
@@ -161,12 +173,14 @@ export default function BreathingPage() {
             )}
           </div>
 
-          {/* Dicas */}
           <div className="mt-8 bg-blue-50 dark:bg-blue-900/30 rounded-2xl p-4">
             <p className="text-sm text-gray-700 dark:text-gray-300 flex items-start gap-2">
               <Lightbulb className="w-5 h-5 mt-0.5 flex-shrink-0 text-amber-500" />
-              <span><strong>Dica:</strong> Encontre uma posição confortável, feche os olhos se quiser,
-              e concentre-se apenas na sua respiração. Se a mente divagar, gentilmente traga sua atenção de volta.</span>
+              <span>
+                <strong>Dica:</strong> Encontre uma posição confortável, feche
+                os olhos se quiser, e concentre-se apenas na sua respiração. Se
+                a mente divagar, gentilmente traga sua atenção de volta.
+              </span>
             </p>
           </div>
         </div>

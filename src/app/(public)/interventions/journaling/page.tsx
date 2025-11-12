@@ -1,18 +1,28 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { FileText, RefreshCw, Save, BookOpen, Lock, Lightbulb, Trash2, MessageCircle, CheckCircle } from 'lucide-react';
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import {
+  FileText,
+  RefreshCw,
+  Save,
+  BookOpen,
+  Lock,
+  Lightbulb,
+  Trash2,
+  MessageCircle,
+  CheckCircle,
+} from "lucide-react";
 
 const prompts = [
-  'Como você está se sentindo agora?',
-  'O que está ocupando sua mente hoje?',
-  'Pelo que você é grato hoje?',
-  'O que te deixou feliz ou triste hoje?',
-  'Que desafio você enfrentou recentemente?',
-  'O que você gostaria de realizar amanhã?',
-  'Como você pode ser gentil consigo mesmo hoje?',
-  'O que te fez sorrir hoje?',
+  "Como você está se sentindo agora?",
+  "O que está ocupando sua mente hoje?",
+  "Pelo que você é grato hoje?",
+  "O que te deixou feliz ou triste hoje?",
+  "Que desafio você enfrentou recentemente?",
+  "O que você gostaria de realizar amanhã?",
+  "Como você pode ser gentil consigo mesmo hoje?",
+  "O que te fez sorrir hoje?",
 ];
 
 type JournalEntry = {
@@ -23,20 +33,18 @@ type JournalEntry = {
 };
 
 export default function JournalingPage() {
-  const [currentPrompt, setCurrentPrompt] = useState('');
-  const [journalText, setJournalText] = useState('');
+  const [currentPrompt, setCurrentPrompt] = useState("");
+  const [journalText, setJournalText] = useState("");
   const [isSaved, setIsSaved] = useState(false);
   const [entries, setEntries] = useState<JournalEntry[]>([]);
   const [showHistory, setShowHistory] = useState(false);
 
   useEffect(() => {
-    // Carregar entradas do localStorage
-    const saved = localStorage.getItem('journalEntries');
+    const saved = localStorage.getItem("journalEntries");
     if (saved) {
       setEntries(JSON.parse(saved));
     }
-    
-    // Selecionar prompt aleatório
+
     setCurrentPrompt(prompts[Math.floor(Math.random() * prompts.length)]);
   }, []);
 
@@ -52,30 +60,30 @@ export default function JournalingPage() {
 
     const updatedEntries = [newEntry, ...entries];
     setEntries(updatedEntries);
-    localStorage.setItem('journalEntries', JSON.stringify(updatedEntries));
-    
+    localStorage.setItem("journalEntries", JSON.stringify(updatedEntries));
+
     setIsSaved(true);
     setTimeout(() => {
-      setJournalText('');
+      setJournalText("");
       setIsSaved(false);
       setCurrentPrompt(prompts[Math.floor(Math.random() * prompts.length)]);
     }, 2000);
   };
 
   const deleteEntry = (id: string) => {
-    const updatedEntries = entries.filter(entry => entry.id !== id);
+    const updatedEntries = entries.filter((entry) => entry.id !== id);
     setEntries(updatedEntries);
-    localStorage.setItem('journalEntries', JSON.stringify(updatedEntries));
+    localStorage.setItem("journalEntries", JSON.stringify(updatedEntries));
   };
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('pt-BR', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
+    return date.toLocaleDateString("pt-BR", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     });
   };
 
@@ -111,7 +119,11 @@ export default function JournalingPage() {
                     {currentPrompt}
                   </h2>
                   <button
-                    onClick={() => setCurrentPrompt(prompts[Math.floor(Math.random() * prompts.length)])}
+                    onClick={() =>
+                      setCurrentPrompt(
+                        prompts[Math.floor(Math.random() * prompts.length)]
+                      )
+                    }
                     className="text-sm text-amber-600 dark:text-amber-400 hover:underline mx-auto flex items-center gap-1"
                   >
                     <RefreshCw className="w-4 h-4" />
@@ -135,9 +147,10 @@ export default function JournalingPage() {
                     disabled={!journalText.trim()}
                     className={`
                       px-6 py-3 rounded-full font-semibold transition-all flex items-center gap-2
-                      ${journalText.trim()
-                        ? 'bg-gradient-to-r from-amber-600 to-orange-600 text-white hover:shadow-lg hover:scale-105'
-                        : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                      ${
+                        journalText.trim()
+                          ? "bg-gradient-to-r from-amber-600 to-orange-600 text-white hover:shadow-lg hover:scale-105"
+                          : "bg-gray-300 text-gray-500 cursor-not-allowed"
                       }
                     `}
                   >
@@ -149,8 +162,12 @@ export default function JournalingPage() {
                 <div className="mt-6 bg-amber-50 dark:bg-amber-900/30 rounded-2xl p-4">
                   <p className="text-sm text-gray-700 dark:text-gray-300 flex items-start gap-2">
                     <Lightbulb className="w-5 h-5 mt-0.5 flex-shrink-0 text-amber-500" />
-                    <span><strong>Dica:</strong> Escrever sobre seus sentimentos ajuda a processá-los
-                    e entender melhor o que está acontecendo dentro de você. Seja honesto e gentil consigo mesmo.</span>
+                    <span>
+                      <strong>Dica:</strong> Escrever sobre seus sentimentos
+                      ajuda a processá-los e entender melhor o que está
+                      acontecendo dentro de você. Seja honesto e gentil consigo
+                      mesmo.
+                    </span>
                   </p>
                 </div>
               </>
@@ -169,7 +186,6 @@ export default function JournalingPage() {
             )}
           </div>
 
-          {/* Histórico */}
           <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-3xl shadow-2xl p-8">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 flex items-center gap-2">
@@ -180,7 +196,7 @@ export default function JournalingPage() {
                 onClick={() => setShowHistory(!showHistory)}
                 className="text-amber-600 dark:text-amber-400 hover:underline text-sm"
               >
-                {showHistory ? 'Ocultar' : 'Mostrar'}
+                {showHistory ? "Ocultar" : "Mostrar"}
               </button>
             </div>
 
@@ -225,8 +241,11 @@ export default function JournalingPage() {
             <div className="mt-6 bg-orange-50 dark:bg-orange-900/30 rounded-2xl p-4">
               <p className="text-sm text-gray-700 dark:text-gray-300 flex items-start gap-2">
                 <Lock className="w-5 h-5 mt-0.5 flex-shrink-0 text-blue-500" />
-                <span><strong>Privacidade:</strong> Suas entradas são salvas apenas no seu dispositivo
-                e nunca são enviadas para nenhum servidor. Só você tem acesso a elas.</span>
+                <span>
+                  <strong>Privacidade:</strong> Suas entradas são salvas apenas
+                  no seu dispositivo e nunca são enviadas para nenhum servidor.
+                  Só você tem acesso a elas.
+                </span>
               </p>
             </div>
           </div>

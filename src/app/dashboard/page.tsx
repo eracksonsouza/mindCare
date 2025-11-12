@@ -1,15 +1,23 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import Link from 'next/link';
-import { Smile, Meh, Frown, AlertCircle, SmilePlus, Activity, TrendingUp, Calendar, Sparkles, Heart, Lightbulb } from 'lucide-react';
-import { LucideIcon } from 'lucide-react';
-
-type CheckIn = {
-  emotion: string;
-  intensity: number;
-  timestamp: string;
-};
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import {
+  Smile,
+  Meh,
+  Frown,
+  AlertCircle,
+  SmilePlus,
+  Activity,
+  TrendingUp,
+  Calendar,
+  Sparkles,
+  Lightbulb,
+} from "lucide-react";
+import { LucideIcon } from "lucide-react";
+import { storage, STORAGE_KEYS } from "@/lib/storage";
+import { EMOTION_CONFIG, DAY_NAMES_SHORT } from "@/lib/constants";
+import type { CheckIn } from "@/types";
 
 type DayData = {
   day: string;
@@ -20,15 +28,7 @@ type DayData = {
   color: string;
 };
 
-const emotionConfig: Record<string, { icon: LucideIcon; label: string; color: string; value: number }> = {
-  happy: { icon: SmilePlus, label: 'Feliz', color: 'from-green-400 to-emerald-400', value: 10 },
-  calm: { icon: Smile, label: 'Calmo', color: 'from-blue-400 to-cyan-400', value: 8 },
-  neutral: { icon: Meh, label: 'Neutro', color: 'from-gray-400 to-slate-400', value: 6 },
-  anxious: { icon: AlertCircle, label: 'Ansioso', color: 'from-yellow-400 to-orange-400', value: 4 },
-  sad: { icon: Frown, label: 'Triste', color: 'from-red-400 to-pink-400', value: 2 },
-};
-
-const dayNames = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+const dayNames = DAY_NAMES_SHORT;
 
 export default function DashboardPage() {
   const [weekData, setWeekData] = useState<DayData[]>([]);
@@ -42,8 +42,8 @@ export default function DashboardPage() {
   }, []);
 
   const loadWeekData = () => {
-    const checkIns: CheckIn[] = JSON.parse(localStorage.getItem('checkIns') || '[]');
-    
+    const checkIns = storage.get<CheckIn[]>(STORAGE_KEYS.CHECK_INS, []);
+
     if (checkIns.length === 0) {
       setHasData(false);
       return;
@@ -51,42 +51,33 @@ export default function DashboardPage() {
 
     setHasData(true);
 
-    // Pegar os últimos 7 dias
     const today = new Date();
     const weekDays: DayData[] = [];
-    
+
     for (let i = 6; i >= 0; i--) {
       const date = new Date(today);
       date.setDate(today.getDate() - i);
       date.setHours(0, 0, 0, 0);
-      
+
       const nextDay = new Date(date);
       nextDay.setDate(date.getDate() + 1);
 
-      // Filtrar check-ins do dia
-      const dayCheckIns = checkIns.filter(checkIn => {
+      const dayCheckIns = checkIns.filter((checkIn) => {
         const checkInDate = new Date(checkIn.timestamp);
         return checkInDate >= date && checkInDate < nextDay;
       });
 
-      // Calcular média do dia (se tiver check-ins)
-      let dayEmotionValue = 5;
       let dayIntensity = 5;
-      let dayEmotion = 'neutral';
-      
+      let dayEmotion = "neutral";
+
       if (dayCheckIns.length > 0) {
-        // Usar o último check-in do dia
         const lastCheckIn = dayCheckIns[dayCheckIns.length - 1];
         dayEmotion = lastCheckIn.emotion;
         dayIntensity = lastCheckIn.intensity;
-        
-        // Calcular valor baseado na emoção e intensidade
-        const baseValue = emotionConfig[dayEmotion]?.value || 5;
-        dayEmotionValue = dayIntensity;
       }
 
-      const config = emotionConfig[dayEmotion] || emotionConfig.neutral;
-      
+      const config = EMOTION_CONFIG[dayEmotion] || EMOTION_CONFIG.neutral;
+
       weekDays.push({
         day: date.getDate().toString(),
         dayName: dayNames[date.getDay()],
@@ -99,23 +90,31 @@ export default function DashboardPage() {
 
     setWeekData(weekDays);
 
-    // Calcular média da semana
-    const validDays = weekDays.filter(d => d.intensity > 0);
+    const validDays = weekDays.filter((d) => d.intensity > 0);
     if (validDays.length > 0) {
-      const avg = validDays.reduce((sum, day) => sum + day.intensity, 0) / validDays.length;
+      const avg =
+        validDays.reduce((sum, day) => sum + day.intensity, 0) /
+        validDays.length;
       setAverage(Math.round(avg * 10) / 10);
     }
 
-    // Encontrar dia mais triste e mais feliz
-    const sadDays = weekDays.filter(d => d.emotion === 'Triste' || d.emotion === 'Ansioso');
+    const sadDays = weekDays.filter(
+      (d) => d.emotion === "Triste" || d.emotion === "Ansioso"
+    );
     if (sadDays.length > 0) {
-      const saddest = sadDays.reduce((prev, curr) => prev.intensity > curr.intensity ? prev : curr);
+      const saddest = sadDays.reduce((prev, curr) =>
+        prev.intensity > curr.intensity ? prev : curr
+      );
       setSaddestDay(saddest);
     }
 
-    const happyDays = weekDays.filter(d => d.emotion === 'Feliz' || d.emotion === 'Calmo');
+    const happyDays = weekDays.filter(
+      (d) => d.emotion === "Feliz" || d.emotion === "Calmo"
+    );
     if (happyDays.length > 0) {
-      const happiest = happyDays.reduce((prev, curr) => prev.intensity > curr.intensity ? prev : curr);
+      const happiest = happyDays.reduce((prev, curr) =>
+        prev.intensity > curr.intensity ? prev : curr
+      );
       setHappiestDay(happiest);
     }
   };
@@ -126,9 +125,10 @@ export default function DashboardPage() {
     }
 
     let insight = "Você teve uma semana ";
-    
+
     if (average >= 7) {
-      insight += "geralmente positiva! Suas emoções parecem mais equilibradas. ";
+      insight +=
+        "geralmente positiva! Suas emoções parecem mais equilibradas. ";
     } else if (average >= 5) {
       insight += "com altos e baixos. É normal ter dias diferentes. ";
     } else {
@@ -180,7 +180,8 @@ export default function DashboardPage() {
               Comece Seu Registro
             </h2>
             <p className="text-gray-600 dark:text-gray-300 mb-8 max-w-md mx-auto">
-              Você ainda não tem check-ins registrados. Faça seu primeiro check-in para começar a acompanhar sua jornada emocional!
+              Você ainda não tem check-ins registrados. Faça seu primeiro
+              check-in para começar a acompanhar sua jornada emocional!
             </p>
             <Link
               href="/check-in"
@@ -224,7 +225,9 @@ export default function DashboardPage() {
             <div className="flex items-center gap-2 bg-gradient-to-r from-purple-100 to-blue-100 dark:from-purple-900/40 dark:to-blue-900/40 px-4 py-2 rounded-full">
               {(() => {
                 const AverageIcon = getAverageIcon();
-                return <AverageIcon className="w-6 h-6 text-purple-600 dark:text-purple-400" />;
+                return (
+                  <AverageIcon className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+                );
               })()}
               <span className="font-bold text-gray-800 dark:text-gray-100">
                 Média: {average.toFixed(1)}/10
@@ -237,10 +240,7 @@ export default function DashboardPage() {
             {weekData.map((day, index) => {
               const DayIcon = day.icon;
               return (
-                <div
-                  key={index}
-                  className="flex flex-col items-center"
-                >
+                <div key={index} className="flex flex-col items-center">
                   <span className="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-2">
                     {day.dayName}
                   </span>
@@ -250,12 +250,12 @@ export default function DashboardPage() {
                       bg-gradient-to-br ${day.color}
                       flex flex-col items-center justify-center
                       shadow-lg hover:scale-105 transition-transform
-                      ${day.intensity === 0 ? 'opacity-30' : ''}
+                      ${day.intensity === 0 ? "opacity-30" : ""}
                     `}
                   >
                     <DayIcon className="w-6 h-6 sm:w-8 sm:h-8 text-white mb-1" />
                     <span className="text-xs sm:text-sm font-bold text-white drop-shadow-md">
-                      {day.intensity > 0 ? `${day.intensity}/10` : '-'}
+                      {day.intensity > 0 ? `${day.intensity}/10` : "-"}
                     </span>
                   </div>
                   <span className="text-xs text-gray-600 dark:text-gray-400 mt-1">
@@ -297,42 +297,50 @@ export default function DashboardPage() {
         {/* Cards de estatísticas */}
         <div className="grid sm:grid-cols-2 gap-6 mb-6">
           {/* Melhor dia */}
-          {happiesDay && (() => {
-            const HappyIcon = happiesDay.icon;
-            return (
-              <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-lg p-6">
-                <div className="flex items-center gap-3 mb-3">
-                  <HappyIcon className="w-8 h-8 text-green-500" />
-                  <h3 className="text-lg font-bold text-gray-800 dark:text-gray-100">
-                    Melhor Dia
-                  </h3>
+          {happiesDay &&
+            (() => {
+              const HappyIcon = happiesDay.icon;
+              return (
+                <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-lg p-6">
+                  <div className="flex items-center gap-3 mb-3">
+                    <HappyIcon className="w-8 h-8 text-green-500" />
+                    <h3 className="text-lg font-bold text-gray-800 dark:text-gray-100">
+                      Melhor Dia
+                    </h3>
+                  </div>
+                  <p className="text-gray-600 dark:text-gray-300">
+                    <strong className="text-purple-600 dark:text-purple-400">
+                      {happiesDay.dayName}
+                    </strong>{" "}
+                    foi seu dia mais positivo, com {happiesDay.emotion} de
+                    intensidade {happiesDay.intensity}/10!
+                  </p>
                 </div>
-                <p className="text-gray-600 dark:text-gray-300">
-                  <strong className="text-purple-600 dark:text-purple-400">{happiesDay.dayName}</strong> foi seu dia mais positivo, 
-                  com {happiesDay.emotion} de intensidade {happiesDay.intensity}/10!
-                </p>
-              </div>
-            );
-          })()}
+              );
+            })()}
 
           {/* Dia mais desafiador */}
-          {saddestDay && (() => {
-            const SadIcon = saddestDay.icon;
-            return (
-              <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-lg p-6">
-                <div className="flex items-center gap-3 mb-3">
-                  <SadIcon className="w-8 h-8 text-red-500" />
-                  <h3 className="text-lg font-bold text-gray-800 dark:text-gray-100">
-                    Dia Mais Desafiador
-                  </h3>
+          {saddestDay &&
+            (() => {
+              const SadIcon = saddestDay.icon;
+              return (
+                <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-lg p-6">
+                  <div className="flex items-center gap-3 mb-3">
+                    <SadIcon className="w-8 h-8 text-red-500" />
+                    <h3 className="text-lg font-bold text-gray-800 dark:text-gray-100">
+                      Dia Mais Desafiador
+                    </h3>
+                  </div>
+                  <p className="text-gray-600 dark:text-gray-300">
+                    <strong className="text-purple-600 dark:text-purple-400">
+                      {saddestDay.dayName}
+                    </strong>{" "}
+                    parece ter sido mais difícil. Lembre-se: dias ruins são
+                    temporários.
+                  </p>
                 </div>
-                <p className="text-gray-600 dark:text-gray-300">
-                  <strong className="text-purple-600 dark:text-purple-400">{saddestDay.dayName}</strong> parece ter sido mais difícil.
-                  Lembre-se: dias ruins são temporários.
-                </p>
-              </div>
-            );
-          })()}
+              );
+            })()}
         </div>
 
         {/* Ações */}
@@ -355,7 +363,10 @@ export default function DashboardPage() {
         <div className="mt-6 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-2xl p-4 text-center">
           <p className="text-sm text-gray-700 dark:text-gray-300 flex items-center justify-center gap-2">
             <Lightbulb className="w-5 h-5 text-amber-500" />
-            <span><strong>Dica:</strong> Check-ins regulares ajudam você a entender seus padrões emocionais e identificar o que te faz bem!</span>
+            <span>
+              <strong>Dica:</strong> Check-ins regulares ajudam você a entender
+              seus padrões emocionais e identificar o que te faz bem!
+            </span>
           </p>
         </div>
       </div>

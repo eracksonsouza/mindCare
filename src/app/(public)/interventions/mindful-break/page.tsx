@@ -1,38 +1,38 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { Coffee, Sparkles, Lightbulb } from 'lucide-react';
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { Coffee, Sparkles, Lightbulb } from "lucide-react";
 
 const exercises = [
   {
     id: 1,
-    title: 'Exercício 5-4-3-2-1',
+    title: "Exercício 5-4-3-2-1",
     duration: 5,
-    description: 'Técnica de ancoragem para o momento presente',
+    description: "Técnica de ancoragem para o momento presente",
     steps: [
-      { text: 'Respire fundo 3 vezes', duration: 15 },
-      { text: 'Identifique 5 coisas que você pode VER', duration: 30 },
-      { text: 'Identifique 4 coisas que você pode TOCAR', duration: 30 },
-      { text: 'Identifique 3 coisas que você pode OUVIR', duration: 30 },
-      { text: 'Identifique 2 coisas que você pode CHEIRAR', duration: 30 },
-      { text: 'Identifique 1 coisa que você pode SABOREAR', duration: 30 },
-      { text: 'Respire fundo novamente e volte ao presente', duration: 15 },
+      { text: "Respire fundo 3 vezes", duration: 15 },
+      { text: "Identifique 5 coisas que você pode VER", duration: 30 },
+      { text: "Identifique 4 coisas que você pode TOCAR", duration: 30 },
+      { text: "Identifique 3 coisas que você pode OUVIR", duration: 30 },
+      { text: "Identifique 2 coisas que você pode CHEIRAR", duration: 30 },
+      { text: "Identifique 1 coisa que você pode SABOREAR", duration: 30 },
+      { text: "Respire fundo novamente e volte ao presente", duration: 15 },
     ],
   },
   {
     id: 2,
-    title: 'Body Scan Rápido',
+    title: "Body Scan Rápido",
     duration: 3,
-    description: 'Escaneamento corporal para relaxamento',
+    description: "Escaneamento corporal para relaxamento",
     steps: [
-      { text: 'Sente-se confortavelmente e feche os olhos', duration: 10 },
-      { text: 'Observe a sensação nos seus pés', duration: 20 },
-      { text: 'Suba para as pernas, soltando qualquer tensão', duration: 30 },
-      { text: 'Note as sensações no seu tronco e costas', duration: 30 },
-      { text: 'Relaxe os ombros e braços', duration: 30 },
-      { text: 'Suavize os músculos do rosto', duration: 20 },
-      { text: 'Respire e aprecie a sensação de relaxamento', duration: 40 },
+      { text: "Sente-se confortavelmente e feche os olhos", duration: 10 },
+      { text: "Observe a sensação nos seus pés", duration: 20 },
+      { text: "Suba para as pernas, soltando qualquer tensão", duration: 30 },
+      { text: "Note as sensações no seu tronco e costas", duration: 30 },
+      { text: "Relaxe os ombros e braços", duration: 30 },
+      { text: "Suavize os músculos do rosto", duration: 20 },
+      { text: "Respire e aprecie a sensação de relaxamento", duration: 40 },
     ],
   },
 ];
@@ -54,9 +54,9 @@ export default function MindfulBreakPage() {
     setStepTimeRemaining(selectedExercise.steps[currentStep].duration);
 
     const timer = setInterval(() => {
-      setStepTimeRemaining(prev => {
+      setStepTimeRemaining((prev) => {
         if (prev <= 1) {
-          setCurrentStep(prevStep => prevStep + 1);
+          setCurrentStep((prevStep) => prevStep + 1);
           return 0;
         }
         return prev - 1;
@@ -76,7 +76,7 @@ export default function MindfulBreakPage() {
     setCurrentStep(0);
   };
 
-  const totalProgress = ((currentStep) / selectedExercise.steps.length) * 100;
+  const totalProgress = (currentStep / selectedExercise.steps.length) * 100;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-teal-50 to-cyan-50 dark:from-gray-900 dark:via-green-900 dark:to-teal-900 font-sans p-4 flex items-center justify-center">
@@ -100,7 +100,6 @@ export default function MindfulBreakPage() {
         <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-3xl shadow-2xl p-8 sm:p-12">
           {!isActive ? (
             <>
-              {/* Seleção de exercício */}
               <div className="space-y-4 mb-8">
                 <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-200 mb-4 text-center">
                   Escolha um exercício
@@ -111,9 +110,10 @@ export default function MindfulBreakPage() {
                     onClick={() => setSelectedExercise(exercise)}
                     className={`
                       w-full text-left p-6 rounded-2xl transition-all
-                      ${selectedExercise.id === exercise.id
-                        ? 'bg-gradient-to-r from-green-100 to-teal-100 dark:from-green-900/40 dark:to-teal-900/40 ring-4 ring-green-500 shadow-lg'
-                        : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600'
+                      ${
+                        selectedExercise.id === exercise.id
+                          ? "bg-gradient-to-r from-green-100 to-teal-100 dark:from-green-900/40 dark:to-teal-900/40 ring-4 ring-green-500 shadow-lg"
+                          : "bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600"
                       }
                     `}
                   >
@@ -146,10 +146,11 @@ export default function MindfulBreakPage() {
             </>
           ) : (
             <>
-              {/* Progresso */}
               <div className="mb-8">
                 <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400 mb-2">
-                  <span>Passo {currentStep + 1} de {selectedExercise.steps.length}</span>
+                  <span>
+                    Passo {currentStep + 1} de {selectedExercise.steps.length}
+                  </span>
                   <span>{stepTimeRemaining}s</span>
                 </div>
                 <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
@@ -160,7 +161,6 @@ export default function MindfulBreakPage() {
                 </div>
               </div>
 
-              {/* Passo atual */}
               {currentStep < selectedExercise.steps.length ? (
                 <div className="text-center mb-12">
                   <div className="flex justify-center mb-6">
@@ -215,12 +215,14 @@ export default function MindfulBreakPage() {
             </>
           )}
 
-          {/* Dicas */}
           <div className="mt-8 bg-green-50 dark:bg-green-900/30 rounded-2xl p-4">
             <p className="text-sm text-gray-700 dark:text-gray-300 flex items-start gap-2">
               <Lightbulb className="w-5 h-5 mt-0.5 flex-shrink-0 text-amber-500" />
-              <span><strong>Dica:</strong> Pausas conscientes são especialmente úteis quando você se sente
-              sobrecarregado ou precisa renovar o foco. Faça sempre que precisar!</span>
+              <span>
+                <strong>Dica:</strong> Pausas conscientes são especialmente
+                úteis quando você se sente sobrecarregado ou precisa renovar o
+                foco. Faça sempre que precisar!
+              </span>
             </p>
           </div>
         </div>
