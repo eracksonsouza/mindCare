@@ -62,7 +62,7 @@ const dayNamesShort = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
 const CheckInPage = () => {
   const [selectedEmotion, setSelectedEmotion] = useState<string | null>(null);
   const [intensity, setIntensity] = useState<number>(5);
-  const [selectedDay, setSelectedDay] = useState<number>(0); // 0 = hoje
+  const [selectedDay, setSelectedDay] = useState<number>(0);
   const [dayOptions, setDayOptions] = useState<DayOption[]>([]);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(
     new Date()
