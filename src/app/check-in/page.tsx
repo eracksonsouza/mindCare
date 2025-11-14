@@ -2,37 +2,20 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import {
-  SmilePlus,
-  Smile,
-  Meh,
-  AlertCircle,
-  Frown,
-  Calendar as CalendarIcon,
-  Lock,
-  Lightbulb,
-} from "lucide-react";
-import { LucideIcon } from "lucide-react";
-import { Calendar } from "@/components/ui/calendar";
+import { SmilePlus, Smile, Meh, AlertCircle, Frown, Lock } from "lucide-react";
+import { DaySelector } from "@/components/check-in/day-selector";
+import { EmotionSelector } from "@/components/check-in/emotion-selector";
+import { IntensitySlider } from "@/components/check-in/intensity-slider";
 import { storage, STORAGE_KEYS } from "@/lib/storage";
 import { MAX_CHECK_INS } from "@/lib/constants";
-import type { CheckIn, Emotion as EmotionType } from "@/types";
+import type {
+  CheckIn,
+  Emotion as EmotionType,
+  EmotionOption,
+  DayOption,
+} from "@/types";
 
-type Emotion = {
-  icon: LucideIcon;
-  label: string;
-  value: string;
-  color: string;
-};
-
-type DayOption = {
-  value: number;
-  label: string;
-  fullLabel: string;
-  date: Date;
-};
-
-const emotions: Emotion[] = [
+const emotions: EmotionOption[] = [
   {
     icon: SmilePlus,
     label: "Feliz",
@@ -84,7 +67,6 @@ const CheckInPage = () => {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(
     new Date()
   );
-  const [showCalendar, setShowCalendar] = useState<boolean>(false);
   const [useCustomDate, setUseCustomDate] = useState<boolean>(false);
   const router = useRouter();
 
@@ -155,174 +137,27 @@ const CheckInPage = () => {
           </p>
         </div>
 
-        {/* Seleção do Dia */}
-        <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-xl p-6 sm:p-8 mb-6">
-          <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4 flex items-center gap-2">
-            <CalendarIcon className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-            Para qual dia é este check-in?
-          </h2>
-          <div className="grid grid-cols-4 sm:grid-cols-7 gap-2 sm:gap-3 mb-4">
-            {dayOptions.map((day) => (
-              <button
-                key={day.value}
-                onClick={() => {
-                  setSelectedDay(day.value);
-                  setUseCustomDate(false);
-                }}
-                className={`
-                  flex flex-col items-center justify-center gap-1 px-3 py-3 rounded-xl border-2
-                  transition-all duration-200 transform hover:scale-105
-                  ${
-                    !useCustomDate && selectedDay === day.value
-                      ? "border-purple-500 bg-gradient-to-br from-purple-100 to-blue-100 dark:from-purple-900/40 dark:to-blue-900/40 shadow-lg"
-                      : "border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700/50 hover:border-purple-300 dark:hover:border-purple-500 hover:shadow-md"
-                  }
-                `}
-              >
-                <span
-                  className={`font-medium text-xs sm:text-sm ${
-                    !useCustomDate && selectedDay === day.value
-                      ? "text-purple-700 dark:text-purple-300"
-                      : "text-gray-700 dark:text-gray-200"
-                  }`}
-                >
-                  {day.label}
-                </span>
-                <span
-                  className={`text-xs ${
-                    !useCustomDate && selectedDay === day.value
-                      ? "text-purple-600 dark:text-purple-400"
-                      : "text-gray-500 dark:text-gray-400"
-                  }`}
-                >
-                  {day.date.getDate()}/{day.date.getMonth() + 1}
-                </span>
-              </button>
-            ))}
-          </div>
+        <DaySelector
+          dayOptions={dayOptions}
+          selectedDay={selectedDay}
+          selectedDate={selectedDate}
+          useCustomDate={useCustomDate}
+          onSelectDay={setSelectedDay}
+          onDateChange={setSelectedDate}
+          onUseCustomDateChange={setUseCustomDate}
+        />
 
-          <div className="flex flex-col gap-3">
-            <button
-              onClick={() => setShowCalendar(!showCalendar)}
-              className={`
-                flex items-center justify-center gap-2 px-4 py-2 rounded-lg border-2 transition-all
-                ${
-                  useCustomDate && selectedDate
-                    ? "border-purple-500 bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20"
-                    : "border-purple-300 dark:border-purple-600 bg-white dark:bg-gray-700 hover:bg-purple-50 dark:hover:bg-purple-900/20"
-                }
-              `}
-            >
-              <CalendarIcon className="w-4 h-4" />
-              <span className="text-sm font-medium">
-                {useCustomDate && selectedDate
-                  ? `${selectedDate.toLocaleDateString("pt-BR", {
-                      day: "2-digit",
-                      month: "2-digit",
-                      year: "numeric",
-                    })}`
-                  : showCalendar
-                  ? "Ocultar calendário"
-                  : "Escolher data específica"}
-              </span>
-            </button>
-
-            {/* Calendário expansível */}
-            {showCalendar && (
-              <div className="flex justify-center animate-fadeIn">
-                <Calendar
-                  mode="single"
-                  selected={selectedDate}
-                  onSelect={(date) => {
-                    setSelectedDate(date);
-                    setUseCustomDate(true);
-                    setShowCalendar(false);
-                  }}
-                  disabled={(date) =>
-                    date > new Date() || date < new Date("1900-01-01")
-                  }
-                  className="rounded-md border shadow"
-                />
-              </div>
-            )}
-          </div>
-
-          <p className="text-xs text-gray-500 dark:text-gray-400 mt-3 text-center flex items-center justify-center gap-1">
-            <Lightbulb className="w-4 h-4 text-amber-500" />
-            Você pode registrar emoções de dias anteriores
-          </p>
-        </div>
-
-        <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-xl p-6 sm:p-8 mb-6">
-          <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">
-            Selecione uma emoção
-          </h2>
-          <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-3">
-            {emotions.map((emotion) => {
-              const EmotionIcon = emotion.icon;
-              return (
-                <button
-                  key={emotion.value}
-                  onClick={() => setSelectedEmotion(emotion.value)}
-                  className={`
-                    flex flex-col sm:flex-row items-center justify-center gap-2 px-4 py-4 sm:py-3 rounded-xl border-2
-                    transition-all duration-200 transform hover:scale-105
-                    ${
-                      selectedEmotion === emotion.value
-                        ? "border-purple-500 bg-gradient-to-br from-purple-100 to-blue-100 dark:from-purple-900/40 dark:to-blue-900/40 shadow-lg"
-                        : "border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700/50 hover:border-purple-300 dark:hover:border-purple-500 hover:shadow-md"
-                    }
-                  `}
-                >
-                  <EmotionIcon
-                    className={`w-8 h-8 sm:w-6 sm:h-6 ${
-                      selectedEmotion === emotion.value
-                        ? "text-purple-600 dark:text-purple-400"
-                        : "text-gray-600 dark:text-gray-400"
-                    }`}
-                  />
-                  <span
-                    className={`font-medium text-sm sm:text-base ${
-                      selectedEmotion === emotion.value
-                        ? "text-purple-700 dark:text-purple-300"
-                        : "text-gray-700 dark:text-gray-200"
-                    }`}
-                  >
-                    {emotion.label}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
+        <EmotionSelector
+          emotions={emotions}
+          selectedEmotion={selectedEmotion}
+          onSelectEmotion={(value) => setSelectedEmotion(value)}
+        />
 
         {selectedEmotion && (
-          <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-xl p-6 sm:p-8 mb-6 animate-fadeIn">
-            <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">
-              Qual a intensidade?
-            </h2>
-            <div className="flex items-center gap-3 sm:gap-4">
-              <span className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">
-                Pouco
-              </span>
-              <input
-                type="range"
-                min="1"
-                max="10"
-                value={intensity}
-                onChange={(e) => setIntensity(Number(e.target.value))}
-                className="flex-1 h-3 bg-gradient-to-r from-green-200 via-yellow-200 to-red-200 dark:from-green-900/50 dark:via-yellow-900/50 dark:to-red-900/50 rounded-lg appearance-none cursor-pointer accent-purple-600 shadow-inner"
-              />
-              <span className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">
-                Muito
-              </span>
-              <div className="flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 shadow-lg">
-                <span className="text-lg font-bold text-white">
-                  {intensity}
-                </span>
-              </div>
-            </div>
-          </div>
+          <IntensitySlider
+            intensity={intensity}
+            onIntensityChange={setIntensity}
+          />
         )}
 
         <div className="flex flex-col sm:flex-row gap-3">
