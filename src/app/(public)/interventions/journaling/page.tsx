@@ -88,7 +88,7 @@ export default function JournalingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50 dark:from-gray-900 dark:via-amber-900 dark:to-yellow-900 font-sans p-4">
+    <div className="min-h-screen bg-linear-to-br from-amber-50 via-yellow-50 to-orange-50 dark:from-gray-900 dark:via-amber-900 dark:to-yellow-900 font-sans p-4">
       <div className="max-w-4xl mx-auto py-8">
         <div className="text-center mb-8">
           <Link
@@ -97,7 +97,7 @@ export default function JournalingPage() {
           >
             ← Voltar
           </Link>
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-amber-600 to-orange-600 dark:from-amber-400 dark:to-orange-400 bg-clip-text text-transparent mb-2 flex items-center justify-center gap-2">
+          <h1 className="text-4xl font-bold bg-linear-to-r from-amber-600 to-orange-600 dark:from-amber-400 dark:to-orange-400 bg-clip-text text-transparent mb-2 flex items-center justify-center gap-2">
             <FileText className="w-10 h-10 text-amber-600 dark:text-amber-400" />
             Journaling Rápido
           </h1>
@@ -107,7 +107,6 @@ export default function JournalingPage() {
         </div>
 
         <div className="grid md:grid-cols-2 gap-6">
-          {/* Área de escrita */}
           <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-3xl shadow-2xl p-8">
             {!isSaved ? (
               <>
@@ -149,7 +148,7 @@ export default function JournalingPage() {
                       px-6 py-3 rounded-full font-semibold transition-all flex items-center gap-2
                       ${
                         journalText.trim()
-                          ? "bg-gradient-to-r from-amber-600 to-orange-600 text-white hover:shadow-lg hover:scale-105"
+                          ? "bg-linear-to-r from-amber-600 to-orange-600 text-white hover:shadow-lg hover:scale-105"
                           : "bg-gray-300 text-gray-500 cursor-not-allowed"
                       }
                     `}
@@ -161,7 +160,7 @@ export default function JournalingPage() {
 
                 <div className="mt-6 bg-amber-50 dark:bg-amber-900/30 rounded-2xl p-4">
                   <p className="text-sm text-gray-700 dark:text-gray-300 flex items-start gap-2">
-                    <Lightbulb className="w-5 h-5 mt-0.5 flex-shrink-0 text-amber-500" />
+                    <Lightbulb className="w-5 h-5 mt-0.5 shrink-0 text-amber-500" />
                     <span>
                       <strong>Dica:</strong> Escrever sobre seus sentimentos
                       ajuda a processá-los e entender melhor o que está
@@ -240,7 +239,7 @@ export default function JournalingPage() {
 
             <div className="mt-6 bg-orange-50 dark:bg-orange-900/30 rounded-2xl p-4">
               <p className="text-sm text-gray-700 dark:text-gray-300 flex items-start gap-2">
-                <Lock className="w-5 h-5 mt-0.5 flex-shrink-0 text-blue-500" />
+                <Lock className="w-5 h-5 mt-0.5 shrink-0 text-blue-500" />
                 <span>
                   <strong>Privacidade:</strong> Suas entradas são salvas apenas
                   no seu dispositivo e nunca são enviadas para nenhum servidor.

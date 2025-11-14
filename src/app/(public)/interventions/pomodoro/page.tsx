@@ -131,7 +131,7 @@ export default function PomodoroPage() {
 
   return (
     <div
-      className={`min-h-screen bg-gradient-to-br ${info.bgColor} font-sans p-4 flex items-center justify-center`}
+      className={`min-h-screen bg-linear-to-br ${info.bgColor} font-sans p-4 flex items-center justify-center`}
     >
       <div className="max-w-2xl w-full">
         <div className="text-center mb-8">
@@ -141,7 +141,7 @@ export default function PomodoroPage() {
           >
             ← Voltar
           </Link>
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-red-600 to-orange-600 dark:from-red-400 dark:to-orange-400 bg-clip-text text-transparent mb-2">
+          <h1 className="text-4xl font-bold bg-linear-to-r from-red-600 to-orange-600 dark:from-red-400 dark:to-orange-400 bg-clip-text text-transparent mb-2">
             ⏱️ Técnica Pomodoro
           </h1>
           <p className="text-gray-600 dark:text-gray-300">
@@ -153,7 +153,7 @@ export default function PomodoroPage() {
           <div className="text-center mb-8">
             <div className="text-6xl mb-4">{info.emoji}</div>
             <h2
-              className={`text-3xl font-bold bg-gradient-to-r ${info.color} bg-clip-text text-transparent mb-2`}
+              className={`text-3xl font-bold bg-linear-to-r ${info.color} bg-clip-text text-transparent mb-2`}
             >
               {info.title}
             </h2>
@@ -166,7 +166,7 @@ export default function PomodoroPage() {
             </div>
             <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4">
               <div
-                className={`bg-gradient-to-r ${info.color} h-4 rounded-full transition-all duration-1000`}
+                className={`bg-linear-to-r ${info.color} h-4 rounded-full transition-all duration-1000`}
                 style={{ width: `${progress}%` }}
               />
             </div>
@@ -178,7 +178,7 @@ export default function PomodoroPage() {
                 key={i}
                 className={`w-4 h-4 rounded-full ${
                   i < completedPomodoros % 4
-                    ? "bg-gradient-to-r from-red-500 to-orange-500"
+                    ? "bg-linear-to-r from-red-500 to-orange-500"
                     : "bg-gray-300 dark:bg-gray-600"
                 }`}
               />
@@ -193,7 +193,7 @@ export default function PomodoroPage() {
             {!isActive ? (
               <button
                 onClick={start}
-                className={`px-8 py-4 rounded-full bg-gradient-to-r ${info.color} text-white font-semibold hover:shadow-lg hover:scale-105 transition-all`}
+                className={`px-8 py-4 rounded-full bg-linear-to-r ${info.color} text-white font-semibold hover:shadow-lg hover:scale-105 transition-all`}
               >
                 {timeRemaining === durations[phase] ? "Iniciar" : "Continuar"}
               </button>

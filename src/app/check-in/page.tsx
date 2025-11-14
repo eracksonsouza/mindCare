@@ -126,10 +126,10 @@ const CheckInPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 dark:from-gray-900 dark:via-purple-900 dark:to-blue-900 p-4 sm:p-8">
+    <div className="min-h-screen bg-linear-to-br from-purple-50 via-blue-50 to-pink-50 dark:from-gray-900 dark:via-purple-900 dark:to-blue-900 p-4 sm:p-8">
       <main className="w-full max-w-4xl mx-auto">
         <div className="mb-8 sm:mb-12">
-          <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 dark:from-purple-400 dark:to-blue-400 bg-clip-text text-transparent mb-3">
+          <h1 className="text-3xl sm:text-4xl font-bold bg-linear-to-r from-purple-600 to-blue-600 dark:from-purple-400 dark:to-blue-400 bg-clip-text text-transparent mb-3">
             Como você está se sentindo agora?
           </h1>
           <p className="text-gray-600 dark:text-gray-300 text-base sm:text-lg">
@@ -174,7 +174,7 @@ const CheckInPage = () => {
               px-6 py-3 rounded-xl font-semibold transition-all transform
               ${
                 selectedEmotion
-                  ? "bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:shadow-lg hover:scale-105"
+                  ? "bg-linear-to-r from-purple-600 to-blue-600 text-white hover:shadow-lg hover:scale-105"
                   : "bg-gray-200 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed opacity-50"
               }
             `}

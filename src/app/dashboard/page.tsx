@@ -157,7 +157,7 @@ export default function DashboardPage() {
 
   if (!hasData) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 dark:from-gray-900 dark:via-purple-900 dark:to-blue-900 p-4 sm:p-8">
+      <div className="min-h-screen bg-linear-to-br from-purple-50 via-blue-50 to-pink-50 dark:from-gray-900 dark:via-purple-900 dark:to-blue-900 p-4 sm:p-8">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-8">
             <Link
@@ -166,7 +166,7 @@ export default function DashboardPage() {
             >
               ← Voltar ao início
             </Link>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 dark:from-purple-400 dark:to-blue-400 bg-clip-text text-transparent mb-2 flex items-center justify-center gap-2">
+            <h1 className="text-4xl font-bold bg-linear-to-r from-purple-600 to-blue-600 dark:from-purple-400 dark:to-blue-400 bg-clip-text text-transparent mb-2 flex items-center justify-center gap-2">
               <Activity className="w-10 h-10 text-purple-600 dark:text-purple-400" />
               Sua Semana Emocional
             </h1>
@@ -185,7 +185,7 @@ export default function DashboardPage() {
             </p>
             <Link
               href="/check-in"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold hover:shadow-lg hover:scale-105 transition-all"
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-linear-to-r from-purple-600 to-blue-600 text-white font-semibold hover:shadow-lg hover:scale-105 transition-all"
             >
               <Sparkles className="w-5 h-5" />
               Fazer Check-in Agora
@@ -197,7 +197,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 dark:from-gray-900 dark:via-purple-900 dark:to-blue-900 p-4 sm:p-8">
+    <div className="min-h-screen bg-linear-to-br from-purple-50 via-blue-50 to-pink-50 dark:from-gray-900 dark:via-purple-900 dark:to-blue-900 p-4 sm:p-8">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-8">
           <Link
@@ -206,7 +206,7 @@ export default function DashboardPage() {
           >
             ← Voltar ao início
           </Link>
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 dark:from-purple-400 dark:to-blue-400 bg-clip-text text-transparent mb-2 flex items-center justify-center gap-2">
+          <h1 className="text-4xl font-bold bg-linear-to-r from-purple-600 to-blue-600 dark:from-purple-400 dark:to-blue-400 bg-clip-text text-transparent mb-2 flex items-center justify-center gap-2">
             <Activity className="w-10 h-10 text-purple-600 dark:text-purple-400" />
             Sua Semana Emocional
           </h1>
@@ -215,14 +215,13 @@ export default function DashboardPage() {
           </p>
         </div>
 
-        {/* Card principal com a semana */}
         <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-3xl shadow-2xl p-6 sm:p-8 mb-6">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 flex items-center gap-2">
               <Calendar className="w-6 h-6" />
               Sua Semana Emocional
             </h2>
-            <div className="flex items-center gap-2 bg-gradient-to-r from-purple-100 to-blue-100 dark:from-purple-900/40 dark:to-blue-900/40 px-4 py-2 rounded-full">
+            <div className="flex items-center gap-2 bg-linear-to-r from-purple-100 to-blue-100 dark:from-purple-900/40 dark:to-blue-900/40 px-4 py-2 rounded-full">
               {(() => {
                 const AverageIcon = getAverageIcon();
                 return (
@@ -235,7 +234,6 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          {/* Visualização da semana */}
           <div className="grid grid-cols-7 gap-2 sm:gap-4 mb-6">
             {weekData.map((day, index) => {
               const DayIcon = day.icon;
@@ -247,7 +245,7 @@ export default function DashboardPage() {
                   <div
                     className={`
                       w-full aspect-square rounded-2xl 
-                      bg-gradient-to-br ${day.color}
+                      bg-linear-to-br ${day.color}
                       flex flex-col items-center justify-center
                       shadow-lg hover:scale-105 transition-transform
                       ${day.intensity === 0 ? "opacity-30" : ""}
@@ -266,10 +264,9 @@ export default function DashboardPage() {
             })}
           </div>
 
-          {/* Barra de progresso visual */}
           <div className="bg-gray-200 dark:bg-gray-700 rounded-full h-4 overflow-hidden">
             <div
-              className="bg-gradient-to-r from-purple-500 to-blue-500 h-full transition-all duration-1000 rounded-full flex items-center justify-end pr-2"
+              className="bg-linear-to-r from-purple-500 to-blue-500 h-full transition-all duration-1000 rounded-full flex items-center justify-end pr-2"
               style={{ width: `${(average / 10) * 100}%` }}
             >
               <span className="text-xs font-bold text-white drop-shadow-md">
@@ -279,10 +276,9 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Card de Insights */}
-        <div className="bg-gradient-to-br from-purple-100 to-blue-100 dark:from-purple-900/40 dark:to-blue-900/40 rounded-3xl shadow-xl p-6 sm:p-8 mb-6">
+        <div className="bg-linear-to-br from-purple-100 to-blue-100 dark:from-purple-900/40 dark:to-blue-900/40 rounded-3xl shadow-xl p-6 sm:p-8 mb-6">
           <div className="flex items-start gap-4">
-            <Lightbulb className="w-10 h-10 text-amber-500 flex-shrink-0" />
+            <Lightbulb className="w-10 h-10 text-amber-500 shrink-0" />
             <div className="flex-1">
               <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-3">
                 Insight da Semana
@@ -294,9 +290,7 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Cards de estatísticas */}
         <div className="grid sm:grid-cols-2 gap-6 mb-6">
-          {/* Melhor dia */}
           {happiesDay &&
             (() => {
               const HappyIcon = happiesDay.icon;
@@ -319,7 +313,6 @@ export default function DashboardPage() {
               );
             })()}
 
-          {/* Dia mais desafiador */}
           {saddestDay &&
             (() => {
               const SadIcon = saddestDay.icon;
@@ -343,11 +336,10 @@ export default function DashboardPage() {
             })()}
         </div>
 
-        {/* Ações */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link
             href="/check-in"
-            className="px-8 py-4 rounded-full bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold hover:shadow-lg hover:scale-105 transition-all text-center"
+            className="px-8 py-4 rounded-full bg-linear-to-r from-purple-600 to-blue-600 text-white font-semibold hover:shadow-lg hover:scale-105 transition-all text-center"
           >
             Fazer Novo Check-in
           </Link>
@@ -359,7 +351,6 @@ export default function DashboardPage() {
           </Link>
         </div>
 
-        {/* Dica */}
         <div className="mt-6 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-2xl p-4 text-center">
           <p className="text-sm text-gray-700 dark:text-gray-300 flex items-center justify-center gap-2">
             <Lightbulb className="w-5 h-5 text-amber-500" />

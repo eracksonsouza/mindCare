@@ -32,7 +32,7 @@ export const EmotionSelector = ({
                 transition-all duration-200 transform hover:scale-105
                 ${
                   isSelected
-                    ? "border-purple-500 bg-gradient-to-br from-purple-100 to-blue-100 dark:from-purple-900/40 dark:to-blue-900/40 shadow-lg"
+                    ? "border-purple-500 bg-linear-to-br from-purple-100 to-blue-100 dark:from-purple-900/40 dark:to-blue-900/40 shadow-lg"
                     : "border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700/50 hover:border-purple-300 dark:hover:border-purple-500 hover:shadow-md"
                 }
               `}

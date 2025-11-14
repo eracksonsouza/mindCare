@@ -24,12 +24,12 @@ export const IntensitySlider = ({
           max="10"
           value={intensity}
           onChange={(event) => onIntensityChange(Number(event.target.value))}
-          className="flex-1 h-3 bg-gradient-to-r from-green-200 via-yellow-200 to-red-200 dark:from-green-900/50 dark:via-yellow-900/50 dark:to-red-900/50 rounded-lg appearance-none cursor-pointer accent-purple-600 shadow-inner"
+          className="flex-1 h-3 bg-linear-to-r from-green-200 via-yellow-200 to-red-200 dark:from-green-900/50 dark:via-yellow-900/50 dark:to-red-900/50 rounded-lg appearance-none cursor-pointer accent-purple-600 shadow-inner"
         />
         <span className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">
           Muito
         </span>
-        <div className="flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 shadow-lg">
+        <div className="flex items-center justify-center w-12 h-12 rounded-full bg-linear-to-br from-purple-500 to-blue-500 shadow-lg">
           <span className="text-lg font-bold text-white">{intensity}</span>
         </div>
       </div>

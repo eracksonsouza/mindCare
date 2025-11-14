@@ -59,7 +59,7 @@ export const DaySelector = ({
               transition-all duration-200 transform hover:scale-105
               ${
                 !useCustomDate && selectedDay === day.value
-                  ? "border-purple-500 bg-gradient-to-br from-purple-100 to-blue-100 dark:from-purple-900/40 dark:to-blue-900/40 shadow-lg"
+                  ? "border-purple-500 bg-linear-to-br from-purple-100 to-blue-100 dark:from-purple-900/40 dark:to-blue-900/40 shadow-lg"
                   : "border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700/50 hover:border-purple-300 dark:hover:border-purple-500 hover:shadow-md"
               }
             `}
@@ -93,7 +93,7 @@ export const DaySelector = ({
             flex items-center justify-center gap-2 px-4 py-2 rounded-lg border-2 transition-all
             ${
               useCustomDate && selectedDate
-                ? "border-purple-500 bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20"
+                ? "border-purple-500 bg-linear-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20"
                 : "border-purple-300 dark:border-purple-600 bg-white dark:bg-gray-700 hover:bg-purple-50 dark:hover:bg-purple-900/20"
             }
           `}
@@ -118,7 +118,9 @@ export const DaySelector = ({
               mode="single"
               selected={selectedDate}
               onSelect={handleCustomDate}
-              disabled={(date) => date > new Date() || date < new Date("1900-01-01")}
+              disabled={(date) =>
+                date > new Date() || date < new Date("1900-01-01")
+              }
               className="rounded-md border shadow"
             />
           </div>

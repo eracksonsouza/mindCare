@@ -79,7 +79,7 @@ export default function MindfulBreakPage() {
   const totalProgress = (currentStep / selectedExercise.steps.length) * 100;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-teal-50 to-cyan-50 dark:from-gray-900 dark:via-green-900 dark:to-teal-900 font-sans p-4 flex items-center justify-center">
+    <div className="min-h-screen bg-linear-to-br from-green-50 via-teal-50 to-cyan-50 dark:from-gray-900 dark:via-green-900 dark:to-teal-900 font-sans p-4 flex items-center justify-center">
       <div className="max-w-2xl w-full">
         <div className="text-center mb-8">
           <Link
@@ -88,7 +88,7 @@ export default function MindfulBreakPage() {
           >
             ← Voltar
           </Link>
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-green-600 to-teal-600 dark:from-green-400 dark:to-teal-400 bg-clip-text text-transparent mb-2 flex items-center justify-center gap-2">
+          <h1 className="text-4xl font-bold bg-linear-to-r from-green-600 to-teal-600 dark:from-green-400 dark:to-teal-400 bg-clip-text text-transparent mb-2 flex items-center justify-center gap-2">
             <Coffee className="w-10 h-10 text-green-600 dark:text-green-400" />
             Pausa Consciente
           </h1>
@@ -112,7 +112,7 @@ export default function MindfulBreakPage() {
                       w-full text-left p-6 rounded-2xl transition-all
                       ${
                         selectedExercise.id === exercise.id
-                          ? "bg-gradient-to-r from-green-100 to-teal-100 dark:from-green-900/40 dark:to-teal-900/40 ring-4 ring-green-500 shadow-lg"
+                          ? "bg-linear-to-r from-green-100 to-teal-100 dark:from-green-900/40 dark:to-teal-900/40 ring-4 ring-green-500 shadow-lg"
                           : "bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600"
                       }
                     `}
@@ -138,7 +138,7 @@ export default function MindfulBreakPage() {
               <div className="flex justify-center">
                 <button
                   onClick={start}
-                  className="px-8 py-4 rounded-full bg-gradient-to-r from-green-600 to-teal-600 text-white font-semibold hover:shadow-lg hover:scale-105 transition-all"
+                  className="px-8 py-4 rounded-full bg-linear-to-r from-green-600 to-teal-600 text-white font-semibold hover:shadow-lg hover:scale-105 transition-all"
                 >
                   Começar Exercício
                 </button>
@@ -155,7 +155,7 @@ export default function MindfulBreakPage() {
                 </div>
                 <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
                   <div
-                    className="bg-gradient-to-r from-green-600 to-teal-600 h-3 rounded-full transition-all duration-300"
+                    className="bg-linear-to-r from-green-600 to-teal-600 h-3 rounded-full transition-all duration-300"
                     style={{ width: `${totalProgress}%` }}
                   />
                 </div>
@@ -175,7 +175,7 @@ export default function MindfulBreakPage() {
                   <div className="flex justify-center mb-6">
                     <Sparkles className="w-16 h-16 text-green-500" />
                   </div>
-                  <h2 className="text-3xl font-bold bg-gradient-to-r from-green-600 to-teal-600 dark:from-green-400 dark:to-teal-400 bg-clip-text text-transparent mb-4">
+                  <h2 className="text-3xl font-bold bg-linear-to-r from-green-600 to-teal-600 dark:from-green-400 dark:to-teal-400 bg-clip-text text-transparent mb-4">
                     Exercício Completo!
                   </h2>
                   <p className="text-gray-600 dark:text-gray-300">
@@ -199,7 +199,7 @@ export default function MindfulBreakPage() {
                         setIsActive(false);
                         setCurrentStep(0);
                       }}
-                      className="px-8 py-4 rounded-full bg-gradient-to-r from-green-600 to-teal-600 text-white font-semibold hover:shadow-lg hover:scale-105 transition-all"
+                      className="px-8 py-4 rounded-full bg-linear-to-r from-green-600 to-teal-600 text-white font-semibold hover:shadow-lg hover:scale-105 transition-all"
                     >
                       Fazer Novamente
                     </button>
@@ -217,7 +217,7 @@ export default function MindfulBreakPage() {
 
           <div className="mt-8 bg-green-50 dark:bg-green-900/30 rounded-2xl p-4">
             <p className="text-sm text-gray-700 dark:text-gray-300 flex items-start gap-2">
-              <Lightbulb className="w-5 h-5 mt-0.5 flex-shrink-0 text-amber-500" />
+              <Lightbulb className="w-5 h-5 mt-0.5 shrink-0 text-amber-500" />
               <span>
                 <strong>Dica:</strong> Pausas conscientes são especialmente
                 úteis quando você se sente sobrecarregado ou precisa renovar o

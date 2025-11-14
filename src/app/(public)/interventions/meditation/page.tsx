@@ -94,7 +94,7 @@ export default function MeditationPage() {
     ((selectedDuration * 60 - timeRemaining) / (selectedDuration * 60)) * 100;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50 dark:from-gray-900 dark:via-purple-900 dark:to-pink-900 font-sans p-4 flex items-center justify-center">
+    <div className="min-h-screen bg-linear-to-br from-purple-50 via-pink-50 to-rose-50 dark:from-gray-900 dark:via-purple-900 dark:to-pink-900 font-sans p-4 flex items-center justify-center">
       <div className="max-w-2xl w-full">
         <div className="text-center mb-8">
           <Link
@@ -103,7 +103,7 @@ export default function MeditationPage() {
           >
             ← Voltar
           </Link>
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 dark:from-purple-400 dark:to-pink-400 bg-clip-text text-transparent mb-2">
+          <h1 className="text-4xl font-bold bg-linear-to-r from-purple-600 to-pink-600 dark:from-purple-400 dark:to-pink-400 bg-clip-text text-transparent mb-2">
             🧠 Meditação Guiada
           </h1>
           <p className="text-gray-600 dark:text-gray-300">
@@ -130,7 +130,7 @@ export default function MeditationPage() {
                         px-6 py-3 rounded-2xl font-semibold transition-all
                         ${
                           selectedDuration === med.duration
-                            ? "bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg scale-105"
+                            ? "bg-linear-to-r from-purple-600 to-pink-600 text-white shadow-lg scale-105"
                             : "bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:scale-105"
                         }
                       `}
@@ -161,7 +161,7 @@ export default function MeditationPage() {
               <div className="flex justify-center">
                 <button
                   onClick={start}
-                  className="px-8 py-4 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold hover:shadow-lg hover:scale-105 transition-all"
+                  className="px-8 py-4 rounded-full bg-linear-to-r from-purple-600 to-pink-600 text-white font-semibold hover:shadow-lg hover:scale-105 transition-all"
                 >
                   Começar Meditação
                 </button>
@@ -170,12 +170,12 @@ export default function MeditationPage() {
           ) : (
             <>
               <div className="text-center mb-8">
-                <div className="text-6xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 dark:from-purple-400 dark:to-pink-400 bg-clip-text text-transparent mb-4">
+                <div className="text-6xl font-bold bg-linear-to-r from-purple-600 to-pink-600 dark:from-purple-400 dark:to-pink-400 bg-clip-text text-transparent mb-4">
                   {formatTime(timeRemaining)}
                 </div>
                 <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 mb-4">
                   <div
-                    className="bg-gradient-to-r from-purple-600 to-pink-600 h-3 rounded-full transition-all duration-1000"
+                    className="bg-linear-to-r from-purple-600 to-pink-600 h-3 rounded-full transition-all duration-1000"
                     style={{ width: `${progress}%` }}
                   />
                 </div>

@@ -1,22 +1,27 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Calendar } from '@/components/ui/calendar';
-import { CalendarIcon } from 'lucide-react';
+import { useState } from "react";
+import { Calendar } from "@/components/ui/calendar";
+import { CalendarIcon } from "lucide-react";
 
 export default function CalendarDemoPage() {
   const [singleDate, setSingleDate] = useState<Date | undefined>(new Date());
-  const [dateRange, setDateRange] = useState<{ from: Date | undefined; to?: Date | undefined }>({
+  const [dateRange, setDateRange] = useState<{
+    from: Date | undefined;
+    to?: Date | undefined;
+  }>({
     from: new Date(),
     to: undefined,
   });
-  const [multipleDates, setMultipleDates] = useState<Date[] | undefined>([new Date()]);
+  const [multipleDates, setMultipleDates] = useState<Date[] | undefined>([
+    new Date(),
+  ]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 dark:from-gray-900 dark:via-purple-900 dark:to-blue-900 p-8">
+    <div className="min-h-screen bg-linear-to-br from-purple-50 via-blue-50 to-pink-50 dark:from-gray-900 dark:via-purple-900 dark:to-blue-900 p-8">
       <div className="max-w-7xl mx-auto">
         <div className="mb-12">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 dark:from-purple-400 dark:to-blue-400 bg-clip-text text-transparent mb-3">
+          <h1 className="text-4xl font-bold bg-linear-to-r from-purple-600 to-blue-600 dark:from-purple-400 dark:to-blue-400 bg-clip-text text-transparent mb-3">
             Demonstração do Componente Calendar
           </h1>
           <p className="text-gray-600 dark:text-gray-300 text-lg">
@@ -25,7 +30,6 @@ export default function CalendarDemoPage() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Single Date Selection */}
           <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-xl p-8">
             <div className="flex items-center gap-3 mb-6">
               <CalendarIcon className="w-6 h-6 text-purple-600 dark:text-purple-400" />
@@ -33,7 +37,7 @@ export default function CalendarDemoPage() {
                 Seleção Única
               </h2>
             </div>
-            
+
             <div className="flex justify-center mb-4">
               <Calendar
                 mode="single"
@@ -49,18 +53,17 @@ export default function CalendarDemoPage() {
                   Data selecionada:
                 </p>
                 <p className="text-lg font-bold text-purple-600 dark:text-purple-400">
-                  {singleDate.toLocaleDateString('pt-BR', {
-                    weekday: 'long',
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
+                  {singleDate.toLocaleDateString("pt-BR", {
+                    weekday: "long",
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
                   })}
                 </p>
               </div>
             )}
           </div>
 
-          {/* Range Selection */}
           <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-xl p-8">
             <div className="flex items-center gap-3 mb-6">
               <CalendarIcon className="w-6 h-6 text-blue-600 dark:text-blue-400" />
@@ -68,12 +71,14 @@ export default function CalendarDemoPage() {
                 Seleção de Período
               </h2>
             </div>
-            
+
             <div className="flex justify-center mb-4">
               <Calendar
                 mode="range"
                 selected={dateRange}
-                onSelect={(range) => setDateRange(range || { from: undefined, to: undefined })}
+                onSelect={(range) =>
+                  setDateRange(range || { from: undefined, to: undefined })
+                }
                 numberOfMonths={1}
                 className="rounded-md border shadow"
               />
@@ -86,7 +91,7 @@ export default function CalendarDemoPage() {
                     Data inicial:
                   </p>
                   <p className="text-lg font-bold text-blue-600 dark:text-blue-400">
-                    {dateRange.from.toLocaleDateString('pt-BR')}
+                    {dateRange.from.toLocaleDateString("pt-BR")}
                   </p>
                 </div>
                 {dateRange.to && (
@@ -95,7 +100,7 @@ export default function CalendarDemoPage() {
                       Data final:
                     </p>
                     <p className="text-lg font-bold text-blue-600 dark:text-blue-400">
-                      {dateRange.to.toLocaleDateString('pt-BR')}
+                      {dateRange.to.toLocaleDateString("pt-BR")}
                     </p>
                   </div>
                 )}
@@ -103,7 +108,6 @@ export default function CalendarDemoPage() {
             )}
           </div>
 
-          {/* Multiple Dates Selection */}
           <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-xl p-8">
             <div className="flex items-center gap-3 mb-6">
               <CalendarIcon className="w-6 h-6 text-green-600 dark:text-green-400" />
@@ -111,7 +115,7 @@ export default function CalendarDemoPage() {
                 Seleção Múltipla
               </h2>
             </div>
-            
+
             <div className="flex justify-center mb-4">
               <Calendar
                 mode="multiple"
@@ -128,8 +132,11 @@ export default function CalendarDemoPage() {
                 </p>
                 <div className="space-y-1 max-h-40 overflow-y-auto">
                   {multipleDates.map((date, index) => (
-                    <p key={index} className="text-sm text-green-600 dark:text-green-400">
-                      • {date.toLocaleDateString('pt-BR')}
+                    <p
+                      key={index}
+                      className="text-sm text-green-600 dark:text-green-400"
+                    >
+                      • {date.toLocaleDateString("pt-BR")}
                     </p>
                   ))}
                 </div>
@@ -137,7 +144,6 @@ export default function CalendarDemoPage() {
             )}
           </div>
 
-          {/* With Disabled Dates */}
           <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-xl p-8">
             <div className="flex items-center gap-3 mb-6">
               <CalendarIcon className="w-6 h-6 text-orange-600 dark:text-orange-400" />
@@ -145,14 +151,13 @@ export default function CalendarDemoPage() {
                 Com Restrições
               </h2>
             </div>
-            
+
             <div className="flex justify-center mb-4">
               <Calendar
                 mode="single"
                 selected={singleDate}
                 onSelect={setSingleDate}
                 disabled={(date) => {
-                  // Desabilita fins de semana e datas futuras
                   const day = date.getDay();
                   return day === 0 || day === 6 || date > new Date();
                 }}
@@ -170,19 +175,18 @@ export default function CalendarDemoPage() {
           </div>
         </div>
 
-        {/* Code Examples */}
         <div className="mt-8 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-xl p-8">
           <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-6">
             Exemplos de Código
           </h2>
-          
+
           <div className="space-y-6">
             <div>
               <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-2">
                 Seleção Única
               </h3>
               <pre className="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm">
-{`<Calendar
+                {`<Calendar
   mode="single"
   selected={date}
   onSelect={setDate}
@@ -196,7 +200,7 @@ export default function CalendarDemoPage() {
                 Seleção de Período
               </h3>
               <pre className="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm">
-{`<Calendar
+                {`<Calendar
   mode="range"
   selected={dateRange}
   onSelect={setDateRange}
@@ -211,7 +215,7 @@ export default function CalendarDemoPage() {
                 Com Datas Desabilitadas
               </h3>
               <pre className="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm">
-{`<Calendar
+                {`<Calendar
   mode="single"
   selected={date}
   onSelect={setDate}

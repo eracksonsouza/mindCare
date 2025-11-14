@@ -96,7 +96,7 @@ export default function BreathingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-cyan-50 to-teal-50 dark:from-gray-900 dark:via-blue-900 dark:to-cyan-900 font-sans p-4 flex items-center justify-center">
+    <div className="min-h-screen bg-linear-to-br from-blue-50 via-cyan-50 to-teal-50 dark:from-gray-900 dark:via-blue-900 dark:to-cyan-900 font-sans p-4 flex items-center justify-center">
       <div className="max-w-2xl w-full">
         <div className="text-center mb-8">
           <Link
@@ -105,7 +105,7 @@ export default function BreathingPage() {
           >
             ← Voltar
           </Link>
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent mb-2 flex items-center justify-center gap-2">
+          <h1 className="text-4xl font-bold bg-linear-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent mb-2 flex items-center justify-center gap-2">
             <Wind className="w-10 h-10 text-blue-600 dark:text-blue-400" />
             Respiração Consciente
           </h1>
@@ -119,7 +119,7 @@ export default function BreathingPage() {
             <div className="relative">
               <div
                 className={`
-                  w-48 h-48 rounded-full bg-gradient-to-br from-blue-400 to-cyan-400
+                  w-48 h-48 rounded-full bg-linear-to-br from-blue-400 to-cyan-400
                   flex items-center justify-center
                   transition-all duration-4000 ease-in-out
                   ${getCircleSize()}
@@ -159,7 +159,7 @@ export default function BreathingPage() {
             {!isActive ? (
               <button
                 onClick={start}
-                className="px-8 py-4 rounded-full bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-semibold hover:shadow-lg hover:scale-105 transition-all"
+                className="px-8 py-4 rounded-full bg-linear-to-r from-blue-600 to-cyan-600 text-white font-semibold hover:shadow-lg hover:scale-105 transition-all"
               >
                 Começar
               </button>
@@ -175,7 +175,7 @@ export default function BreathingPage() {
 
           <div className="mt-8 bg-blue-50 dark:bg-blue-900/30 rounded-2xl p-4">
             <p className="text-sm text-gray-700 dark:text-gray-300 flex items-start gap-2">
-              <Lightbulb className="w-5 h-5 mt-0.5 flex-shrink-0 text-amber-500" />
+              <Lightbulb className="w-5 h-5 mt-0.5 shrink-0 text-amber-500" />
               <span>
                 <strong>Dica:</strong> Encontre uma posição confortável, feche
                 os olhos se quiser, e concentre-se apenas na sua respiração. Se
