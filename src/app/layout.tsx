@@ -51,10 +51,10 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/android-chrome-512x512.png",
-        width: 512,
-        height: 512,
-        alt: "MindCare Logo",
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "MindCare - Cuidado Emocional para Estudantes",
       },
     ],
   },
@@ -62,7 +62,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "MindCare - Cuidado Emocional para Estudantes",
     description: "Plataforma de apoio emocional para adolescentes estudantes.",
-    images: ["/android-chrome-512x512.png"],
+    images: ["/og-image.png"],
   },
   robots: {
     index: true,
